@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>"Avoid Friendly Fire" Stance</name>
+  <author>Falconne</author>
+  <description>Adds an new shooting mode for drafted colonists with guns to tell them not to shoot if there are friendlies in harms way.</description>
+  <targetVersion>0.17.1557</targetVersion>
+</ModMetaData>
