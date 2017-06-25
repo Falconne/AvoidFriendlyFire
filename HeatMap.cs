@@ -74,10 +74,27 @@ namespace AvoidFriendlyFire
             if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
                 return false;
 
+            for (int xSplash = targetCell.x - 1; xSplash <= targetCell.x + 1; xSplash++)
+            {
+                for (int zSplash = targetCell.z - 1; zSplash <= targetCell.z + 1; zSplash++)
+                {
+                    var splashTarget = new IntVec3(xSplash, targetCell.y, zSplash);
+                    if (IsCollinear(pawnCell, overlayCell, splashTarget))
+                        return true;
+                }
+
+
+            }
+
+            return false;
+        }
+
+        private bool IsCollinear(IntVec3 pawnCell, IntVec3 checkedCell, IntVec3 targetCell)
+        {
             // (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
-            var lhs = Math.Abs((pawnCell.z - overlayCell.z) * (pawnCell.x - targetCell.x));
-            var rhs = Math.Abs((pawnCell.z - targetCell.z) * (pawnCell.x - overlayCell.x));
-            return Math.Abs(lhs - rhs) < 10;
+            var lhs = Math.Abs((pawnCell.z - checkedCell.z) * (pawnCell.x - targetCell.x));
+            var rhs = Math.Abs((pawnCell.z - targetCell.z) * (pawnCell.x - checkedCell.x));
+            return Math.Abs(lhs - rhs) < 5;
         }
 
         public Color GetCellExtraColor(int index)
