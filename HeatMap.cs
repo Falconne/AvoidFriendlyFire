@@ -37,15 +37,44 @@ namespace AvoidFriendlyFire
             if (map.fogGrid.IsFogged(index))
                 return false;
 
-            var mouseCell = UI.MouseCell();
-            if (!mouseCell.InBounds(Find.VisibleMap) || mouseCell.Fogged(Find.VisibleMap))
+            var targetCell = UI.MouseCell();
+            if (!targetCell.InBounds(Find.VisibleMap) || targetCell.Fogged(Find.VisibleMap))
+                return false;
+
+            var pawnCell = _pawn.PositionHeld;
+            if (targetCell == pawnCell)
                 return false;
 
             var overlayCell = map.cellIndices.IndexToCell(index);
-            if (overlayCell.AdjacentToCardinal(mouseCell) || overlayCell.AdjacentToDiagonal(mouseCell))
+            if (overlayCell == targetCell || overlayCell == pawnCell)
+                return false;
+
+            if (overlayCell.AdjacentToCardinal(pawnCell) || overlayCell.AdjacentToDiagonal(pawnCell))
+                return false;
+
+            if (overlayCell.AdjacentToCardinal(targetCell) || overlayCell.AdjacentToDiagonal(targetCell))
                 return true;
 
-            return false;
+            var pawnToTargetDiff = targetCell - pawnCell;
+            var checkedCellToTargetDiff = targetCell - overlayCell;
+            if (Math.Abs(checkedCellToTargetDiff.x) > Math.Abs(pawnToTargetDiff.x))
+                return false;
+
+            if (Math.Abs(checkedCellToTargetDiff.z) > Math.Abs(pawnToTargetDiff.z))
+                return false;
+
+            var distanceFromPawnToTarget = pawnToTargetDiff.LengthManhattan;
+            var distanceFromTargetToCheckedCell = checkedCellToTargetDiff.LengthManhattan;
+
+            if (distanceFromTargetToCheckedCell > distanceFromPawnToTarget)
+                return false;
+
+            var checkedCellToPawnDiff = overlayCell - pawnCell;
+            var distanceFromPawnToCheckedCell = checkedCellToPawnDiff.LengthManhattan;
+            if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
+                return false;
+
+            return true;
         }
 
         public Color GetCellExtraColor(int index)
