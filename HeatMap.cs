@@ -57,10 +57,10 @@ namespace AvoidFriendlyFire
 
             var pawnToTargetDiff = targetCell - pawnCell;
             var checkedCellToTargetDiff = targetCell - overlayCell;
-            if (Math.Abs(checkedCellToTargetDiff.x) > Math.Abs(pawnToTargetDiff.x))
+            if (Math.Abs(checkedCellToTargetDiff.x) > Math.Abs(pawnToTargetDiff.x) + 2)
                 return false;
 
-            if (Math.Abs(checkedCellToTargetDiff.z) > Math.Abs(pawnToTargetDiff.z))
+            if (Math.Abs(checkedCellToTargetDiff.z) > Math.Abs(pawnToTargetDiff.z) + 2)
                 return false;
 
             var distanceFromPawnToTarget = pawnToTargetDiff.LengthManhattan;
@@ -74,7 +74,10 @@ namespace AvoidFriendlyFire
             if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
                 return false;
 
-            return true;
+            // (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
+            var lhs = Math.Abs((pawnCell.z - overlayCell.z) * (pawnCell.x - targetCell.x));
+            var rhs = Math.Abs((pawnCell.z - targetCell.z) * (pawnCell.x - overlayCell.x));
+            return Math.Abs(lhs - rhs) < 10;
         }
 
         public Color GetCellExtraColor(int index)
