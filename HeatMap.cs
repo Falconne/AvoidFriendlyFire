@@ -50,12 +50,25 @@ namespace AvoidFriendlyFire
             if (overlayCell == targetCell || overlayCell == pawnCell)
                 return false;
 
-            if (overlayCell.AdjacentToCardinal(pawnCell) || overlayCell.AdjacentToDiagonal(pawnCell))
-                return false;
+            // Nearby pawns do not receive friendly fire
+            var checkedCellToPawnDiff = overlayCell - pawnCell;
 
+            {
+                var xDiff = Math.Abs(checkedCellToPawnDiff.x);
+                var zDiff = Math.Abs(checkedCellToPawnDiff.z);
+                //Main.Instance.Logger.Message($"x,z: {xDiff}, {zDiff}");
+                if ((xDiff == 0 && zDiff < 5) || (zDiff == 0 && xDiff < 5))
+                    return false;
+
+                if (xDiff + zDiff < 6)
+                    return false;
+            }
+
+            // Any pawn adjacent to target can get hit
             if (overlayCell.AdjacentToCardinal(targetCell) || overlayCell.AdjacentToDiagonal(targetCell))
                 return true;
 
+            // Eliminate as many cells as possible based on simple distance arithmetic
             var pawnToTargetDiff = targetCell - pawnCell;
             var checkedCellToTargetDiff = targetCell - overlayCell;
             if (Math.Abs(checkedCellToTargetDiff.x) > Math.Abs(pawnToTargetDiff.x) + 2)
@@ -70,14 +83,11 @@ namespace AvoidFriendlyFire
             if (distanceFromTargetToCheckedCell > distanceFromPawnToTarget)
                 return false;
 
-            var checkedCellToPawnDiff = overlayCell - pawnCell;
             var distanceFromPawnToCheckedCell = checkedCellToPawnDiff.LengthManhattan;
             if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
                 return false;
 
-            if (pawnCell.DistanceToSquared(overlayCell) <= 16)
-                return false;
-
+            // No more easy elimination; now do brute force check to see if cell is in the fire cone
             if (_fireCone.Contains(index))
                 return true;
 

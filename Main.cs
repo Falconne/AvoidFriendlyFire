@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HugsLib.Utils;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -21,6 +22,8 @@ namespace AvoidFriendlyFire
         public override string ModIdentifier => "AvoidFriendlyFire";
 
         internal static Main Instance { get; private set; }
+
+        internal new ModLogger Logger => base.Logger;
 
         public void UpdateHeatMap()
         {
