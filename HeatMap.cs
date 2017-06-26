@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -38,10 +39,10 @@ namespace AvoidFriendlyFire
                 return false;
 
             var targetCell = UI.MouseCell();
-            if (!targetCell.InBounds(Find.VisibleMap) || targetCell.Fogged(Find.VisibleMap))
+            if (!targetCell.InBounds(map) || targetCell.Fogged(map))
                 return false;
 
-            var pawnCell = _pawn.PositionHeld;
+            var pawnCell = _pawn.Position;
             if (targetCell == pawnCell)
                 return false;
 
@@ -74,27 +75,10 @@ namespace AvoidFriendlyFire
             if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
                 return false;
 
-            for (int xSplash = targetCell.x - 1; xSplash <= targetCell.x + 1; xSplash++)
-            {
-                for (int zSplash = targetCell.z - 1; zSplash <= targetCell.z + 1; zSplash++)
-                {
-                    var splashTarget = new IntVec3(xSplash, targetCell.y, zSplash);
-                    if (IsCollinear(pawnCell, overlayCell, splashTarget))
-                        return true;
-                }
-
-
-            }
+            if (_fireCone.Contains(index))
+                return true;
 
             return false;
-        }
-
-        private bool IsCollinear(IntVec3 pawnCell, IntVec3 checkedCell, IntVec3 targetCell)
-        {
-            // (y1 - y2) * (x1 - x3) == (y1 - y3) * (x1 - x2);
-            var lhs = Math.Abs((pawnCell.z - checkedCell.z) * (pawnCell.x - targetCell.x));
-            var rhs = Math.Abs((pawnCell.z - targetCell.z) * (pawnCell.x - checkedCell.x));
-            return Math.Abs(lhs - rhs) < 5;
         }
 
         public Color GetCellExtraColor(int index)
@@ -109,6 +93,7 @@ namespace AvoidFriendlyFire
             Drawer.MarkForDraw();
             if (ShouldUpdate())
             {
+                BuildFireCone();
                 Drawer.SetDirty();
             }
             Drawer.CellBoolDrawerUpdate();
@@ -129,15 +114,53 @@ namespace AvoidFriendlyFire
             return false;
         }
 
+        private void BuildFireCone()
+        {
+            _fireCone.Clear();
+            if (_pawn == null)
+                return;
+
+            if (Mouse.IsInputBlockedNow)
+                return;
+
+            var map = Find.VisibleMap;
+
+            var targetCell = UI.MouseCell();
+            if (!targetCell.InBounds(map) || targetCell.Fogged(map))
+                return;
+
+            var pawnCell = _pawn.Position;
+            if (targetCell == pawnCell)
+                return;
+
+            for (int xSplash = targetCell.x - 1; xSplash <= targetCell.x + 1; xSplash++)
+            {
+                for (int zSplash = targetCell.z - 1; zSplash <= targetCell.z + 1; zSplash++)
+                {
+                    var splashTarget = new IntVec3(xSplash, targetCell.y, zSplash);
+                    _fireCone.AddRange(GetShootablePointsBetween(pawnCell, splashTarget, map));
+                }
+            }
+        }
+
+        private IEnumerable<int> GetShootablePointsBetween(IntVec3 source, IntVec3 target, Map map)
+        {
+            return GenSight.PointsOnLineOfSight(source, target)
+                .Select(v => map.cellIndices.CellToIndex(v.x, v.z))
+                .Where(i => !_fireCone.Contains(i));
+        }
+
         private Pawn GetSelectedPawn()
         {
             return Find.VisibleMap.mapPawns.FreeColonists.FirstOrDefault(p => p.Drafted);
         }
 
-        private Pawn _pawn;
+        private readonly Pawn _pawn;
 
         private IntVec3 _lastMouseCell;
 
         private CellBoolDrawer _drawerInt;
+
+        private readonly List<int> _fireCone = new List<int>();
     }
 }
