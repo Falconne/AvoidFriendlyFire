@@ -75,6 +75,9 @@ namespace AvoidFriendlyFire
             if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
                 return false;
 
+            if (pawnCell.DistanceToSquared(overlayCell) <= 16)
+                return false;
+
             if (_fireCone.Contains(index))
                 return true;
 
