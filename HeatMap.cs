@@ -13,6 +13,7 @@ namespace AvoidFriendlyFire
         {
             _pawn = GetSelectedPawn();
         }
+
         public CellBoolDrawer Drawer
         {
             get
@@ -63,10 +64,6 @@ namespace AvoidFriendlyFire
                     return false;
             }
 
-            // Any pawn adjacent to target can get hit
-            if (overlayCell.AdjacentToCardinal(targetCell) || overlayCell.AdjacentToDiagonal(targetCell))
-                return true;
-
             // Eliminate as many cells as possible based on simple distance arithmetic
             var pawnToTargetDiff = targetCell - pawnCell;
             var checkedCellToTargetDiff = targetCell - overlayCell;
@@ -83,14 +80,11 @@ namespace AvoidFriendlyFire
                 return false;
 
             var distanceFromPawnToCheckedCell = checkedCellToPawnDiff.LengthManhattan;
-            if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget)
+            if (distanceFromPawnToCheckedCell > distanceFromPawnToTarget + 2)
                 return false;
 
             // No more easy elimination; now do brute force check to see if cell is in the fire cone
-            if (_fireCone.Contains(index))
-                return true;
-
-            return false;
+            return _fireCone.Contains(index);
         }
 
         public Color GetCellExtraColor(int index)
@@ -150,7 +144,7 @@ namespace AvoidFriendlyFire
                 for (int zSplash = targetCell.z - 1; zSplash <= targetCell.z + 1; zSplash++)
                 {
                     var splashTarget = new IntVec3(xSplash, targetCell.y, zSplash);
-                    _fireCone.AddRange(GetShootablePointsBetween(pawnCell, splashTarget, map));
+                    _fireCone.UnionWith(GetShootablePointsBetween(pawnCell, splashTarget, map));
                 }
             }
         }
@@ -162,12 +156,10 @@ namespace AvoidFriendlyFire
                 if (!point.CanBeSeenOver(map))
                     yield break;
 
-                var pointIndex = map.cellIndices.CellToIndex(point.x, point.z);
-                if (_fireCone.Contains(pointIndex))
-                    continue;
-
-                yield return pointIndex;
+                yield return map.cellIndices.CellToIndex(point.x, point.z);
             }
+
+            yield return map.cellIndices.CellToIndex(target.x, target.z);
         }
 
         private Pawn GetSelectedPawn()
@@ -181,6 +173,6 @@ namespace AvoidFriendlyFire
 
         private CellBoolDrawer _drawerInt;
 
-        private readonly List<int> _fireCone = new List<int>();
+        private readonly HashSet<int> _fireCone = new HashSet<int>();
     }
 }
