@@ -157,9 +157,17 @@ namespace AvoidFriendlyFire
 
         private IEnumerable<int> GetShootablePointsBetween(IntVec3 source, IntVec3 target, Map map)
         {
-            return GenSight.PointsOnLineOfSight(source, target)
-                .Select(v => map.cellIndices.CellToIndex(v.x, v.z))
-                .Where(i => !_fireCone.Contains(i));
+            foreach (var point in GenSight.PointsOnLineOfSight(source, target))
+            {
+                if (!point.CanBeSeenOver(map))
+                    yield break;
+
+                var pointIndex = map.cellIndices.CellToIndex(point.x, point.z);
+                if (_fireCone.Contains(pointIndex))
+                    continue;
+
+                yield return pointIndex;
+            }
         }
 
         private Pawn GetSelectedPawn()
