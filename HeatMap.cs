@@ -56,11 +56,10 @@ namespace AvoidFriendlyFire
             {
                 var xDiff = Math.Abs(checkedCellToPawnDiff.x);
                 var zDiff = Math.Abs(checkedCellToPawnDiff.z);
-                //Main.Instance.Logger.Message($"x,z: {xDiff}, {zDiff}");
                 if ((xDiff == 0 && zDiff < 5) || (zDiff == 0 && xDiff < 5))
                     return false;
 
-                if (xDiff + zDiff < 6)
+                if (xDiff > 0 && zDiff > 0 && xDiff + zDiff < 6)
                     return false;
             }
 
