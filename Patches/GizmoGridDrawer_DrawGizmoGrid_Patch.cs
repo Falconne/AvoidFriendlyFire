@@ -19,12 +19,16 @@ namespace AvoidFriendlyFire.Patches
             if (pawn == null || !pawn.Drafted)
                 return true;
 
+            var pawnData = Main.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
+
             var gizmoList = gizmos.ToList();
-            var ourGizmo = new Command_Toggle();
-            ourGizmo.defaultLabel = "Avoid Friendly Fire";
-            ourGizmo.icon = Resources.FriendlyFireIcon;
-            ourGizmo.isActive = () => true;
-            ourGizmo.toggleAction = () => { };
+            var ourGizmo = new Command_Toggle
+            {
+                defaultLabel = "Avoid Friendly Fire",
+                icon = Resources.FriendlyFireIcon,
+                isActive = () => pawnData.AvoidFriendlyFire,
+                toggleAction = () => pawnData.AvoidFriendlyFire = !pawnData.AvoidFriendlyFire
+            };
             gizmoList.Add(ourGizmo);
             gizmos = gizmoList;
 
