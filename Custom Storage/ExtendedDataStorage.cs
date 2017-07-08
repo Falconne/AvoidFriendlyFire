@@ -43,6 +43,11 @@ namespace AvoidFriendlyFire
             return newExtendedData;
         }
 
+        public bool IsTrackedPawn(Pawn pawn)
+        {
+            return _store.ContainsKey(pawn.thingIDNumber);
+        }
+
         // Delete extended data when Pawn is killed
         public void DeleteExtendedDataFor(Pawn pawn)
         {
