@@ -54,6 +54,7 @@
     <Compile Include="Custom Storage\ExtendedDataStorage.cs" />
     <Compile Include="Custom Storage\ExtendedPawnData.cs" />
     <Compile Include="FireCalculations.cs" />
+    <Compile Include="FireManager.cs" />
     <Compile Include="HeatMap.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MapInterface_Detour.cs" />
