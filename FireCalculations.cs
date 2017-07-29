@@ -5,7 +5,7 @@ namespace AvoidFriendlyFire
 {
     public class FireCalculations
     {
-        public static void BuildFireCone(IntVec3 origin, IntVec3 target)
+        public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target)
         {
             var result = new HashSet<int>();
             
@@ -14,10 +14,10 @@ namespace AvoidFriendlyFire
             Map map = Find.VisibleMap;
 
             if (!target.InBounds(map) || target.Fogged(map))
-                return;
+                return null;
 
             if (target == origin)
-                return;
+                return null;
 
             for (var xSplash = target.x - 1; xSplash <= target.x + 1; xSplash++)
             {
@@ -27,6 +27,8 @@ namespace AvoidFriendlyFire
                     result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
                 }
             }
+
+            return result;
         }
 
         private static IEnumerable<int> GetShootablePointsBetween(
