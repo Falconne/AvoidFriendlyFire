@@ -5,13 +5,32 @@ namespace AvoidFriendlyFire
 {
     public class FireManager
     {
-        bool CanHitTargetSafely(IntVec3 origin, IntVec3 target)
+        public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target)
+        {
+            HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target);
+            if (fireCone == null)
+                return false;
+        }
+
+        private HashSet<int> GetOrCreatedCachedFireConeFor(IntVec3 origin, IntVec3 target)
         {
             var map = Find.VisibleMap;
             var originIndex = map.cellIndices.CellToIndex(origin);
             var targetIndex = map.cellIndices.CellToIndex(target);
 
             if (_cachedFireCones.TryGetValue(originIndex, out var cachedFireConesFromOrigin))
+            {
+                if (cachedFireConesFromOrigin.TryGetValue(targetIndex, out var cachedFireCone))
+                {
+                    cachedFireCone.Prolong();
+                    return cachedFireCone.FireCone;
+                }
+            }
+
+            var newFireCone = new CachedFireCone(FireCalculations.GetFireCone(origin, target));
+            _cachedFireCones[originIndex][targetIndex] = newFireCone;
+
+            return newFireCone.FireCone;
         }
 
         private readonly Dictionary<int, Dictionary<int, CachedFireCone>> _cachedFireCones

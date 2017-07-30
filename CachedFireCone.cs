@@ -8,7 +8,7 @@ namespace AvoidFriendlyFire
         public CachedFireCone(HashSet<int> fireCone)
         {
             FireCone = fireCone;
-            _expireAt = Find.TickManager.TicksGame + 1000;
+            Prolong();
         }
 
         public bool IsExpired()
@@ -16,8 +16,13 @@ namespace AvoidFriendlyFire
             return Find.TickManager.TicksGame >= _expireAt;
         }
 
+        public void Prolong()
+        {
+            _expireAt += Find.TickManager.TicksGame + 1000;
+        }
+
         public readonly HashSet<int> FireCone;
 
-        private readonly int _expireAt;
+        private int _expireAt = 0;
     }
 }
