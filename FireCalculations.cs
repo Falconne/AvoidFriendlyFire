@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -19,6 +20,7 @@ namespace AvoidFriendlyFire
             if (target == origin)
                 return null;
 
+            // Create fire cone using target and the 8 cells adjacent to target
             for (var xSplash = target.x - 1; xSplash <= target.x + 1; xSplash++)
             {
                 for (var zSplash = target.z - 1; zSplash <= target.z + 1; zSplash++)
@@ -32,12 +34,24 @@ namespace AvoidFriendlyFire
         }
 
         private static IEnumerable<int> GetShootablePointsBetween(
-            IntVec3 source, IntVec3 target, Map map)
+            IntVec3 origin, IntVec3 target, Map map)
         {
-            foreach (IntVec3 point in GenSight.PointsOnLineOfSight(source, target))
+            foreach (IntVec3 point in GenSight.PointsOnLineOfSight(origin, target))
             {
                 if (!point.CanBeSeenOver(map))
                     yield break;
+
+                // Nearby pawns do not receive friendly fire
+                var checkedCellToOriginDistance = point - origin;
+                {
+                    var xDiff = Math.Abs(checkedCellToOriginDistance.x);
+                    var zDiff = Math.Abs(checkedCellToOriginDistance.z);
+                    if ((xDiff == 0 && zDiff < 5) || (zDiff == 0 && xDiff < 5))
+                        continue;
+
+                    if (xDiff > 0 && zDiff > 0 && xDiff + zDiff < 6)
+                        continue;
+                }
 
                 yield return map.cellIndices.CellToIndex(point.x, point.z);
             }

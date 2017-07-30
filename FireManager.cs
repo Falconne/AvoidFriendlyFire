@@ -10,6 +10,23 @@ namespace AvoidFriendlyFire
             HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target);
             if (fireCone == null)
                 return false;
+
+            var map = Find.VisibleMap;
+            foreach (Pawn pawn in map.mapPawns.FreeColonists)
+            {
+                if (pawn.Dead)
+                    continue;
+
+                var pawnCell = pawn.Position;
+                if (pawnCell == origin || pawnCell == target)
+                    continue;
+
+                var pawnIndex = map.cellIndices.CellToIndex(pawnCell);
+                if (fireCone.Contains(pawnIndex))
+                    return false;
+            }
+
+            return true;
         }
 
         private HashSet<int> GetOrCreatedCachedFireConeFor(IntVec3 origin, IntVec3 target)
