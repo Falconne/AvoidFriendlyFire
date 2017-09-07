@@ -39,8 +39,11 @@ namespace AvoidFriendlyFire
             {
                 if (cachedFireConesFromOrigin.TryGetValue(targetIndex, out var cachedFireCone))
                 {
-                    cachedFireCone.Prolong();
-                    return cachedFireCone.FireCone;
+                    if (!cachedFireCone.IsExpired())
+                    {
+                        cachedFireCone.Prolong();
+                        return cachedFireCone.FireCone;
+                    }
                 }
             }
 

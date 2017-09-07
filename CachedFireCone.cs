@@ -18,11 +18,11 @@ namespace AvoidFriendlyFire
 
         public void Prolong()
         {
-            _expireAt += Find.TickManager.TicksGame + 1000;
+            _expireAt += Find.TickManager.TicksGame + 2000;
         }
 
         public readonly HashSet<int> FireCone;
 
-        private int _expireAt = 0;
+        private int _expireAt;
     }
 }

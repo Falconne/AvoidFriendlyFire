@@ -19,6 +19,17 @@ namespace AvoidFriendlyFire.Patches
             if (!extendedData.AvoidFriendlyFire)
                 return;
 
+            var primaryWeaponVerb = pawn.equipment?.PrimaryEq?.PrimaryVerb as Verb_LaunchProjectile;
+            if (primaryWeaponVerb == null)
+                return;
+
+            if (primaryWeaponVerb.verbProps.forcedMissRadius > 0.5f)
+                // Can't handle miniguns and such
+                return;
+
+            // TODO check if projectile is flyOverhead
+            //if (!primaryWeaponVerb.canFreeInterceptNow)
+
 
         }
     }
