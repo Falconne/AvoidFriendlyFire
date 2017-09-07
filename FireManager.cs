@@ -52,7 +52,10 @@ namespace AvoidFriendlyFire
             }
 
             var newFireCone = new CachedFireCone(FireCalculations.GetFireCone(origin, target));
+            if (!_cachedFireCones.ContainsKey(originIndex))
+                _cachedFireCones.Add(originIndex, new Dictionary<int, CachedFireCone>());
             _cachedFireCones[originIndex][targetIndex] = newFireCone;
+
 
             return newFireCone.FireCone;
         }
