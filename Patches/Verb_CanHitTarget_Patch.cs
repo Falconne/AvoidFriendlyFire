@@ -30,7 +30,7 @@ namespace AvoidFriendlyFire.Patches
             // TODO check if projectile is flyOverhead
             //if (!primaryWeaponVerb.canFreeInterceptNow)
 
-
+            __result = Main.Instance.GetFireManager().CanHitTargetSafely(pawn, targ.Cell);
         }
     }
 }

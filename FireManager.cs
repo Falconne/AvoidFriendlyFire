@@ -5,16 +5,20 @@ namespace AvoidFriendlyFire
 {
     public class FireManager
     {
-        public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target)
+        public bool CanHitTargetSafely(Pawn shooterPawn, IntVec3 target)
         {
+            var origin = shooterPawn.Position;
             HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target);
             if (fireCone == null)
                 return false;
 
             var map = Find.VisibleMap;
-            foreach (Pawn pawn in map.mapPawns.FreeColonists)
+            foreach (var pawn in map.mapPawns.FreeColonists)
             {
                 if (pawn.Dead)
+                    continue;
+
+                if (pawn == shooterPawn)
                     continue;
 
                 var pawnCell = pawn.Position;

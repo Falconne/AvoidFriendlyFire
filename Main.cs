@@ -9,6 +9,8 @@ namespace AvoidFriendlyFire
 
         private ExtendedDataStorage _extendedDataStorage;
 
+        private FireManager _fireManager;
+
         public Main()
         {
             Instance = this;
@@ -19,6 +21,7 @@ namespace AvoidFriendlyFire
             base.WorldLoaded();
             _extendedDataStorage =
                 UtilityWorldObjectManager.GetUtilityWorldObject<ExtendedDataStorage>();
+            _fireManager = new FireManager();
         }
 
         public override void MapLoaded(Map map)
@@ -32,6 +35,12 @@ namespace AvoidFriendlyFire
         {
             return _extendedDataStorage;
         }
+
+        public FireManager GetFireManager()
+        {
+            return _fireManager;
+        }
+
         internal static Main Instance { get; private set; }
 
         internal new ModLogger Logger => base.Logger;
