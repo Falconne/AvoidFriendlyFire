@@ -6,6 +6,26 @@ namespace AvoidFriendlyFire
 {
     public class FireCalculations
     {
+        public static bool HasValidWeapon(Pawn pawn)
+        {
+            var primaryWeaponVerb = pawn.equipment?.PrimaryEq?.PrimaryVerb as Verb_LaunchProjectile;
+            if (primaryWeaponVerb == null)
+                return false;
+
+            if (primaryWeaponVerb.verbProps.forcedMissRadius > 0.5f)
+                // Can't handle miniguns and such
+                return false;
+
+            if (primaryWeaponVerb.HighlightFieldRadiusAroundTarget() > 0.2f)
+                // Can't handle explosive projectiles yet
+                return false;
+
+            // TODO check if projectile is flyOverhead
+            //if (!primaryWeaponVerb.canFreeInterceptNow)
+
+            return true;
+        }
+
         public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target)
         {
             var result = new HashSet<int>();

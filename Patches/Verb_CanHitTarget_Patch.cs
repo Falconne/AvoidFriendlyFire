@@ -1,7 +1,7 @@
 ﻿using Harmony;
 using Verse;
 
-namespace AvoidFriendlyFire.Patches
+namespace AvoidFriendlyFire
 {
     [HarmonyPatch(typeof(Verb), "CanHitTarget")]
     public class Verb_CanHitTarget_Patch
@@ -19,16 +19,8 @@ namespace AvoidFriendlyFire.Patches
             if (!extendedData.AvoidFriendlyFire)
                 return;
 
-            var primaryWeaponVerb = pawn.equipment?.PrimaryEq?.PrimaryVerb as Verb_LaunchProjectile;
-            if (primaryWeaponVerb == null)
+            if (!FireCalculations.HasValidWeapon(pawn))
                 return;
-
-            if (primaryWeaponVerb.verbProps.forcedMissRadius > 0.5f)
-                // Can't handle miniguns and such
-                return;
-
-            // TODO check if projectile is flyOverhead
-            //if (!primaryWeaponVerb.canFreeInterceptNow)
 
             __result = Main.Instance.GetFireManager().CanHitTargetSafely(pawn, targ.Cell);
         }

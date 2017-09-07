@@ -19,6 +19,9 @@ namespace AvoidFriendlyFire.Patches
             if (pawn == null || !pawn.Drafted)
                 return true;
 
+            if (!FireCalculations.HasValidWeapon(pawn))
+                return true;
+
             var pawnData = Main.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
 
             var gizmoList = gizmos.ToList();
