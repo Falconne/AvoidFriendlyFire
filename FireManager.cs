@@ -3,6 +3,8 @@ using Verse;
 
 namespace AvoidFriendlyFire
 {
+    // TODO clear expired cones
+
     public class FireManager
     {
         public bool CanHitTargetSafely(Pawn shooterPawn, IntVec3 target)
