@@ -6,7 +6,7 @@ namespace AvoidFriendlyFire.Patches
     [HarmonyPatch(typeof(Verb), "CanHitTarget")]
     public class Verb_CanHitTarget_Patch
     {
-        public static void Postfix(ref Verb __instance, bool __result, LocalTargetInfo targ)
+        public static void Postfix(ref Verb __instance, ref bool __result, LocalTargetInfo targ)
         {
             if (!__result || !__instance.CasterIsPawn || !targ.IsValid)
                 return;
