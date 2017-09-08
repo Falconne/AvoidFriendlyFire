@@ -48,21 +48,23 @@ namespace AvoidFriendlyFire
 
             _lastCleanupTick = currentTick;
 
-            var cachedFireConesFromOrigins = _cachedFireCones.ToList();
-            foreach (var cachedFireConesFromOneOrigin in cachedFireConesFromOrigins)
+            var origins = _cachedFireCones.Keys.ToList();
+            foreach (var origin in origins)
             {
-                foreach (var cachedFireConeToATarget in cachedFireConesFromOneOrigin.Value)
+                var cachedFireConesFromOneOrigin = _cachedFireCones[origin];
+                var targets = cachedFireConesFromOneOrigin.Keys.ToList();
+                foreach (var target in targets)
                 {
-                    if (cachedFireConeToATarget.Value.IsExpired())
+                    var cachedFireCone = cachedFireConesFromOneOrigin[target];
+                    if (cachedFireCone.IsExpired())
                     {
-                        Main.Instance.Logger.Message($"Clearing fire cone to {cachedFireConeToATarget.Key}");
-                        cachedFireConesFromOneOrigin.Value.Remove(cachedFireConeToATarget.Key);
+                        cachedFireConesFromOneOrigin.Remove(target);
                     }
                 }
 
-                if (cachedFireConesFromOneOrigin.Value.Count == 0)
+                if (cachedFireConesFromOneOrigin.Count == 0)
                 {
-                    _cachedFireCones.Remove(cachedFireConesFromOneOrigin.Key);
+                    _cachedFireCones.Remove(origin);
                 }
             }
         }
