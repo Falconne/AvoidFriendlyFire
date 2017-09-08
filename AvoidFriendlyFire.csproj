@@ -56,7 +56,7 @@
     <Compile Include="Custom Storage\ExtendedPawnData.cs" />
     <Compile Include="FireCalculations.cs" />
     <Compile Include="FireManager.cs" />
-    <Compile Include="HeatMap.cs" />
+    <Compile Include="FireConeOverlay.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MapInterface_Detour.cs" />
     <Compile Include="Patches\GizmoGridDrawer_DrawGizmoGrid_Patch.cs" />

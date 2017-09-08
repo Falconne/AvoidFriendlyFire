@@ -7,9 +7,9 @@ using Verse;
 
 namespace AvoidFriendlyFire
 {
-    public class HeatMap : ICellBoolGiver
+    public class FireConeOverlay : ICellBoolGiver
     {
-        public HeatMap()
+        public FireConeOverlay()
         {
             _pawn = GetSelectedPawn();
         }
@@ -94,13 +94,17 @@ namespace AvoidFriendlyFire
 
         public Color Color => Color.red;
 
-        public void Update()
+        public void Update(bool enabled)
         {
-            Drawer.MarkForDraw();
-            if (ShouldUpdate())
+            if (enabled)
             {
-                BuildFireCone();
-                Drawer.SetDirty();
+                Drawer.MarkForDraw();
+                if (ShouldUpdate())
+                {
+                    BuildFireCone();
+                    Drawer.SetDirty();
+                }
+                
             }
             Drawer.CellBoolDrawerUpdate();
         }
@@ -149,19 +153,6 @@ namespace AvoidFriendlyFire
             }
         }
 
-        private IEnumerable<int> GetShootablePointsBetween(IntVec3 source, IntVec3 target, Map map)
-        {
-            foreach (var point in GenSight.PointsOnLineOfSight(source, target))
-            {
-                if (!point.CanBeSeenOver(map))
-                    yield break;
-
-                yield return map.cellIndices.CellToIndex(point.x, point.z);
-            }
-
-            yield return map.cellIndices.CellToIndex(target.x, target.z);
-        }
-
         private Pawn GetSelectedPawn()
         {
             return Find.VisibleMap.mapPawns.FreeColonists.FirstOrDefault(p => p.Drafted);
@@ -173,6 +164,6 @@ namespace AvoidFriendlyFire
 
         private CellBoolDrawer _drawerInt;
 
-        private readonly HashSet<int> _fireCone = new HashSet<int>();
+        private readonly HashSet<int> _fireCone;
     }
 }

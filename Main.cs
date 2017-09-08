@@ -5,7 +5,7 @@ namespace AvoidFriendlyFire
 {
     public class Main : HugsLib.ModBase
     {
-        private HeatMap _heatMap;
+        private FireConeOverlay _fireConeOverlay;
 
         private ExtendedDataStorage _extendedDataStorage;
 
@@ -22,11 +22,15 @@ namespace AvoidFriendlyFire
             _extendedDataStorage =
                 UtilityWorldObjectManager.GetUtilityWorldObject<ExtendedDataStorage>();
             _fireManager = new FireManager();
+            _fireConeOverlay = new FireConeOverlay();
         }
 
-        public override void MapLoaded(Map map)
+        public void UpdateFireConeOverlay(bool enabled)
         {
-            _heatMap = new HeatMap();
+            if (_fireConeOverlay == null)
+                return;
+
+            _fireConeOverlay.Update(enabled);
         }
 
         public override string ModIdentifier => "AvoidFriendlyFire";
@@ -44,10 +48,5 @@ namespace AvoidFriendlyFire
         internal static Main Instance { get; private set; }
 
         internal new ModLogger Logger => base.Logger;
-
-        public void UpdateHeatMap()
-        {
-            //_heatMap?.Update();
-        }
     }
 }

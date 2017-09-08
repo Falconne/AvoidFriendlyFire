@@ -8,6 +8,7 @@ namespace AvoidFriendlyFire
     {
         public static void Postfix(ref Targeter __instance)
         {
+            Main.Instance.UpdateFireConeOverlay(false);
             if (__instance.targetingVerb == null)
                 return;
 
@@ -16,6 +17,8 @@ namespace AvoidFriendlyFire
 
             if (__instance.targetingVerb.HighlightFieldRadiusAroundTarget() > 0.2f)
                 return;
+
+            Main.Instance.UpdateFireConeOverlay(true);
         }
     }
 }
