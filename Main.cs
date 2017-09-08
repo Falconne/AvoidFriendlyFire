@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using HugsLib.Settings;
 using HugsLib.Utils;
 using RimWorld;
 using Verse;
@@ -19,6 +21,8 @@ namespace AvoidFriendlyFire
         private ExtendedDataStorage _extendedDataStorage;
 
         private FireManager _fireManager;
+
+        private SettingHandle<bool> _showOverlay;
 
         public Main()
         {
@@ -45,12 +49,18 @@ namespace AvoidFriendlyFire
             _fireConeOverlay = new FireConeOverlay();
         }
 
+        public override void DefsLoaded()
+        {
+            base.DefsLoaded();
+            _showOverlay = Settings.GetHandle(
+                "showOverlay", "Show targeting overlay",
+                "When manually targeting a ranged weapon, highlight all tiles the projectile could pass through, accounting for miss radius.",
+                true);
+        }
+
         public void UpdateFireConeOverlay(bool enabled)
         {
-            if (_fireConeOverlay == null)
-                return;
-
-            _fireConeOverlay.Update(enabled);
+            _fireConeOverlay?.Update(_showOverlay && enabled);
         }
 
         public static Pawn GetSelectedDraftedPawn()

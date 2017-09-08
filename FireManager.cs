@@ -30,7 +30,11 @@ namespace AvoidFriendlyFire
                     continue;
 
                 var pawnCell = pawn.Position;
-                if (pawnCell == origin || pawnCell == target)
+                if (pawnCell == target)
+                    // Do not allow targeting friendlies
+                    return false;
+
+                if (pawnCell == origin)
                     continue;
 
                 var pawnIndex = map.cellIndices.CellToIndex(pawnCell);
