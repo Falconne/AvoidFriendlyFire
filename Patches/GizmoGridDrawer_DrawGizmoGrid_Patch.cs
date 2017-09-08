@@ -11,12 +11,8 @@ namespace AvoidFriendlyFire.Patches
     {
         public static bool Prefix(ref IEnumerable<Gizmo> gizmos)
         {
-            var selectedObjects = Find.Selector.SelectedObjects;
-            if (selectedObjects == null || selectedObjects.Count != 1)
-                return true;
-
-            var pawn = selectedObjects.First() as Pawn;
-            if (pawn == null || !pawn.Drafted)
+            var pawn = Main.GetSelectedDraftedPawn();
+            if (pawn == null)
                 return true;
 
             if (!FireCalculations.HasValidWeapon(pawn))

@@ -58,7 +58,6 @@
     <Compile Include="FireManager.cs" />
     <Compile Include="FireConeOverlay.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="MapInterface_Detour.cs" />
     <Compile Include="Patches\GizmoGridDrawer_DrawGizmoGrid_Patch.cs" />
     <Compile Include="Patches\Targeter_TargeterUpdate_Patch.cs" />
     <Compile Include="Patches\Verb_CanHitTarget_Patch.cs" />

@@ -1,4 +1,6 @@
-﻿using HugsLib.Utils;
+﻿using System.Collections.Generic;
+using System.Linq;
+using HugsLib.Utils;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -31,6 +33,19 @@ namespace AvoidFriendlyFire
                 return;
 
             _fireConeOverlay.Update(enabled);
+        }
+
+        public static Pawn GetSelectedDraftedPawn()
+        {
+            List<object> selectedObjects = Find.Selector.SelectedObjects;
+            if (selectedObjects == null || selectedObjects.Count != 1)
+                return null;
+
+            var pawn = selectedObjects.First() as Pawn;
+            if (pawn == null || !pawn.Drafted)
+                return null;
+
+            return pawn;
         }
 
         public override string ModIdentifier => "AvoidFriendlyFire";
