@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -7,6 +8,11 @@ namespace AvoidFriendlyFire
 
     public class FireManager
     {
+        private readonly Dictionary<int, Dictionary<int, CachedFireCone>> _cachedFireCones
+            = new Dictionary<int, Dictionary<int, CachedFireCone>>();
+
+        private int _lastCleanupTick;
+
         public bool CanHitTargetSafely(Pawn shooterPawn, IntVec3 target)
         {
             var origin = shooterPawn.Position;
@@ -35,6 +41,32 @@ namespace AvoidFriendlyFire
             return true;
         }
 
+        public void RemoveExpiredCones(int currentTick)
+        {
+            if (currentTick - _lastCleanupTick < 1000)
+                return;
+
+            _lastCleanupTick = currentTick;
+
+            var cachedFireConesFromOrigins = _cachedFireCones.ToList();
+            foreach (var cachedFireConesFromOneOrigin in cachedFireConesFromOrigins)
+            {
+                foreach (var cachedFireConeToATarget in cachedFireConesFromOneOrigin.Value)
+                {
+                    if (cachedFireConeToATarget.Value.IsExpired())
+                    {
+                        Main.Instance.Logger.Message($"Clearing fire cone to {cachedFireConeToATarget.Key}");
+                        cachedFireConesFromOneOrigin.Value.Remove(cachedFireConeToATarget.Key);
+                    }
+                }
+
+                if (cachedFireConesFromOneOrigin.Value.Count == 0)
+                {
+                    _cachedFireCones.Remove(cachedFireConesFromOneOrigin.Key);
+                }
+            }
+        }
+
         private HashSet<int> GetOrCreatedCachedFireConeFor(IntVec3 origin, IntVec3 target)
         {
             var map = Find.VisibleMap;
@@ -61,8 +93,5 @@ namespace AvoidFriendlyFire
 
             return newFireCone.FireCone;
         }
-
-        private readonly Dictionary<int, Dictionary<int, CachedFireCone>> _cachedFireCones
-            = new Dictionary<int, Dictionary<int, CachedFireCone>>();
     }
 }

@@ -1,12 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HugsLib.Utils;
+using RimWorld;
 using Verse;
 
 namespace AvoidFriendlyFire
 {
     public class Main : HugsLib.ModBase
     {
+        public override string ModIdentifier => "AvoidFriendlyFire";
+
+        internal static Main Instance { get; private set; }
+
+        internal new ModLogger Logger => base.Logger;
+
         private FireConeOverlay _fireConeOverlay;
 
         private ExtendedDataStorage _extendedDataStorage;
@@ -16,6 +23,12 @@ namespace AvoidFriendlyFire
         public Main()
         {
             Instance = this;
+        }
+
+        public override void Tick(int currentTick)
+        {
+            base.Tick(currentTick);
+            _fireManager?.RemoveExpiredCones(currentTick);
         }
 
         public override void WorldLoaded()
@@ -53,8 +66,6 @@ namespace AvoidFriendlyFire
             return pawn;
         }
 
-        public override string ModIdentifier => "AvoidFriendlyFire";
-
         public ExtendedDataStorage GetExtendedDataStorage()
         {
             return _extendedDataStorage;
@@ -64,9 +75,5 @@ namespace AvoidFriendlyFire
         {
             return _fireManager;
         }
-
-        internal static Main Instance { get; private set; }
-
-        internal new ModLogger Logger => base.Logger;
     }
 }
