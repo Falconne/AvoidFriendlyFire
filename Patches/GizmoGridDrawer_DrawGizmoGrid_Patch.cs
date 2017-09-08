@@ -11,6 +11,9 @@ namespace AvoidFriendlyFire.Patches
     {
         public static bool Prefix(ref IEnumerable<Gizmo> gizmos)
         {
+            if (!Main.Instance.IsModEnabled())
+                return true;
+
             var pawn = Main.GetSelectedDraftedPawn();
             if (pawn == null)
                 return true;

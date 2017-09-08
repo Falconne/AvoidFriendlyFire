@@ -24,6 +24,8 @@ namespace AvoidFriendlyFire
 
         private SettingHandle<bool> _showOverlay;
 
+        private SettingHandle<bool> _modEnabled;
+
         public Main()
         {
             Instance = this;
@@ -32,6 +34,8 @@ namespace AvoidFriendlyFire
         public override void Tick(int currentTick)
         {
             base.Tick(currentTick);
+            if (!IsModEnabled())
+                return;
             _fireManager?.RemoveExpiredCones(currentTick);
         }
 
@@ -52,6 +56,12 @@ namespace AvoidFriendlyFire
         public override void DefsLoaded()
         {
             base.DefsLoaded();
+
+            _modEnabled = Settings.GetHandle(
+                "enabled", "Enable Mod",
+                "If mod is causing problems, please log a bug and disable from here till an update is available, so as to preserve yours settings.",
+                true);
+
             _showOverlay = Settings.GetHandle(
                 "showOverlay", "Show targeting overlay",
                 "When manually targeting a ranged weapon, highlight all tiles the projectile could pass through, accounting for miss radius.",
@@ -84,6 +94,11 @@ namespace AvoidFriendlyFire
         public FireManager GetFireManager()
         {
             return _fireManager;
+        }
+
+        public bool IsModEnabled()
+        {
+            return _modEnabled;
         }
     }
 }

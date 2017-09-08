@@ -8,6 +8,9 @@ namespace AvoidFriendlyFire
     {
         public static void Postfix(ref Verb __instance, ref bool __result, LocalTargetInfo targ)
         {
+            if (!Main.Instance.IsModEnabled())
+                return;
+
             if (!__result || !__instance.CasterIsPawn || !targ.IsValid)
                 return;
 

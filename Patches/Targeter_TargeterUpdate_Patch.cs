@@ -8,6 +8,9 @@ namespace AvoidFriendlyFire
     {
         public static void Postfix(ref Targeter __instance)
         {
+            if (!Main.Instance.IsModEnabled())
+                return;
+
             Main.Instance.UpdateFireConeOverlay(false);
             if (__instance.targetingVerb == null)
                 return;
