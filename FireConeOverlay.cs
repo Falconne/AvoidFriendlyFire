@@ -71,6 +71,9 @@ namespace AvoidFriendlyFire
             if (pawn == null)
                 return;
 
+            if (!FireCalculations.HasValidWeapon(pawn))
+                return;
+
             var targetCell = UI.MouseCell();
             _fireCone = FireCalculations.GetFireCone(pawn.Position, targetCell);
         }

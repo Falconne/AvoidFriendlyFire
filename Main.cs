@@ -23,6 +23,11 @@ namespace AvoidFriendlyFire
             base.WorldLoaded();
             _extendedDataStorage =
                 UtilityWorldObjectManager.GetUtilityWorldObject<ExtendedDataStorage>();
+        }
+
+        public override void MapLoaded(Map map)
+        {
+            base.MapLoaded(map);
             _fireManager = new FireManager();
             _fireConeOverlay = new FireConeOverlay();
         }
