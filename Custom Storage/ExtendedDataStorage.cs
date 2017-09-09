@@ -45,6 +45,9 @@ namespace AvoidFriendlyFire
 
         public bool IsTrackedPawn(Pawn pawn)
         {
+            if (pawn == null)
+                return false;
+
             return _store.ContainsKey(pawn.thingIDNumber);
         }
 
