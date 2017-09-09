@@ -18,27 +18,37 @@ namespace AvoidFriendlyFire
         {
             HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target);
             if (fireCone == null)
-                return false;
+                return true;
 
             var map = Find.VisibleMap;
-            foreach (var pawn in map.mapPawns.PawnsInFaction(Faction.OfPlayer))
+            foreach (var pawn in map.mapPawns.AllPawns)
             {
-                if (pawn.Dead)
+                if (pawn?.RaceProps == null || pawn.Dead)
                     continue;
 
-                if (!pawn.RaceProps.Humanlike)
+                if (pawn.Faction == null)
+                    continue;
+
+                if (pawn.RaceProps.Humanlike)
                 {
+                    if (pawn.IsPrisoner)
+                        continue;
+
+                    if (pawn.Faction != Faction.OfPlayer && pawn.Faction.HostileTo(Faction.OfPlayer))
+                        continue;
+                }
+                else
+                {
+                    if (pawn.Faction != Faction.OfPlayer)
+                        continue;
+
                     // Only consider animals assigned to a master for now
-                    if (pawn.playerSettings.master == null)
+                    if (pawn.playerSettings?.master == null)
                         continue;
                 }
 
                 var pawnCell = pawn.Position;
-                if (pawnCell == target)
-                    // Do not allow targeting friendlies
-                    return false;
-
-                if (pawnCell == origin)
+                if (pawnCell == origin || pawnCell == target)
                     continue;
 
                 var pawnIndex = map.cellIndices.CellToIndex(pawnCell);
@@ -51,7 +61,7 @@ namespace AvoidFriendlyFire
 
         public void RemoveExpiredCones(int currentTick)
         {
-            if (currentTick - _lastCleanupTick < 1000)
+            if (currentTick - _lastCleanupTick < 400)
                 return;
 
             _lastCleanupTick = currentTick;
