@@ -8,7 +8,7 @@ namespace AvoidFriendlyFire
     {
         public static bool HasValidWeapon(Pawn pawn)
         {
-            var primaryWeaponVerb = pawn.equipment?.PrimaryEq?.PrimaryVerb as Verb_LaunchProjectile;
+            var primaryWeaponVerb = GetEquippedProjectileWeaponVerb(pawn);
             if (primaryWeaponVerb == null)
                 return false;
 
@@ -24,6 +24,13 @@ namespace AvoidFriendlyFire
             //if (!primaryWeaponVerb.canFreeInterceptNow)
 
             return true;
+        }
+
+        public static float GetEquippedWeaponRange(Pawn pawn)
+        {
+            var primaryWeaponVerb = GetEquippedProjectileWeaponVerb(pawn);
+
+            return primaryWeaponVerb?.verbProps.range ?? 0;
         }
 
         public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target)
@@ -51,6 +58,11 @@ namespace AvoidFriendlyFire
             }
 
             return result;
+        }
+
+        private static Verb_LaunchProjectile GetEquippedProjectileWeaponVerb(Pawn pawn)
+        {
+            return pawn.equipment?.PrimaryEq?.PrimaryVerb as Verb_LaunchProjectile;
         }
 
         private static IEnumerable<int> GetShootablePointsBetween(

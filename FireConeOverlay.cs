@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using RimWorld;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -9,6 +6,13 @@ namespace AvoidFriendlyFire
 {
     public class FireConeOverlay : ICellBoolGiver
     {
+        private IntVec3 _lastMouseCell;
+
+        private CellBoolDrawer _drawerInt;
+
+        private HashSet<int> _fireCone;
+
+
         public CellBoolDrawer Drawer
         {
             get
@@ -75,14 +79,11 @@ namespace AvoidFriendlyFire
                 return;
 
             var targetCell = UI.MouseCell();
+            var pawnCell = pawn.Position;
+            if (pawnCell.DistanceTo(targetCell) > FireCalculations.GetEquippedWeaponRange(pawn))
+                return;
+
             _fireCone = FireCalculations.GetFireCone(pawn.Position, targetCell);
         }
-
-
-        private IntVec3 _lastMouseCell;
-
-        private CellBoolDrawer _drawerInt;
-
-        private HashSet<int> _fireCone;
     }
 }
