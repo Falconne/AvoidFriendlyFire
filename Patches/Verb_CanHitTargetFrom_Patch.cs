@@ -3,8 +3,8 @@ using Verse;
 
 namespace AvoidFriendlyFire
 {
-    [HarmonyPatch(typeof(Verb), "CanHitTarget")]
-    public class Verb_CanHitTarget_Patch
+    [HarmonyPatch(typeof(Verb), "CanHitTargetFrom")]
+    public class Verb_CanHitTargetFrom_Patch
     {
         public static void Postfix(ref Verb __instance, ref bool __result, LocalTargetInfo targ)
         {
