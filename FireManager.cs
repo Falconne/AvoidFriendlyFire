@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using RimWorld;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -20,10 +21,17 @@ namespace AvoidFriendlyFire
                 return false;
 
             var map = Find.VisibleMap;
-            foreach (var pawn in map.mapPawns.FreeColonists)
+            foreach (var pawn in map.mapPawns.PawnsInFaction(Faction.OfPlayer))
             {
                 if (pawn.Dead)
                     continue;
+
+                if (!pawn.RaceProps.Humanlike)
+                {
+                    // Only consider animals assigned to a master for now
+                    if (pawn.playerSettings.master == null)
+                        continue;
+                }
 
                 var pawnCell = pawn.Position;
                 if (pawnCell == target)
