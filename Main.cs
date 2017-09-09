@@ -44,6 +44,9 @@ namespace AvoidFriendlyFire
             base.WorldLoaded();
             _extendedDataStorage =
                 UtilityWorldObjectManager.GetUtilityWorldObject<ExtendedDataStorage>();
+
+            // Ticks appear to be run before MapLoaded, so we need a FireManager available
+            _fireManager = new FireManager();
         }
 
         public override void MapLoaded(Map map)
