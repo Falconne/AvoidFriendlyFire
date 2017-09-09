@@ -58,6 +58,7 @@
     <Compile Include="FireManager.cs" />
     <Compile Include="FireConeOverlay.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Patches\AttackTargetFinder_BestAttackTarget_Patch.cs" />
     <Compile Include="Patches\GizmoGridDrawer_DrawGizmoGrid_Patch.cs" />
     <Compile Include="Patches\Targeter_TargeterUpdate_Patch.cs" />
     <Compile Include="Patches\Verb_CanHitTargetFrom_Patch.cs" />

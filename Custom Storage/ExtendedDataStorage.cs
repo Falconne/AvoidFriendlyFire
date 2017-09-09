@@ -51,6 +51,20 @@ namespace AvoidFriendlyFire
             return _store.ContainsKey(pawn.thingIDNumber);
         }
 
+        public bool ShouldPawnAvoifFriendlyFire(Pawn pawn)
+        {
+            if (!IsTrackedPawn(pawn))
+                return false;
+
+            if (!GetExtendedDataFor(pawn).AvoidFriendlyFire)
+                return false;
+
+            if (!FireCalculations.HasValidWeapon(pawn))
+                return false;
+
+            return true;
+        }
+
         // TODO Delete extended data when Pawn is killed
         public void DeleteExtendedDataFor(Pawn pawn)
         {

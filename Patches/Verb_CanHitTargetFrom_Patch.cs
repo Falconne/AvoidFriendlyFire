@@ -15,14 +15,7 @@ namespace AvoidFriendlyFire
                 return;
 
             var pawn = __instance.CasterPawn;
-            if (!Main.Instance.GetExtendedDataStorage().IsTrackedPawn(pawn))
-                return;
-
-            var extendedData = Main.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
-            if (!extendedData.AvoidFriendlyFire)
-                return;
-
-            if (!FireCalculations.HasValidWeapon(pawn))
+            if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoifFriendlyFire(pawn))
                 return;
 
             __result = Main.Instance.GetFireManager().CanHitTargetSafely(root, targ.Cell);
