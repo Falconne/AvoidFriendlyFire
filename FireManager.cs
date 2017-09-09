@@ -13,9 +13,8 @@ namespace AvoidFriendlyFire
 
         private int _lastCleanupTick;
 
-        public bool CanHitTargetSafely(Pawn shooterPawn, IntVec3 target)
+        public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target)
         {
-            var origin = shooterPawn.Position;
             HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target);
             if (fireCone == null)
                 return false;
@@ -24,9 +23,6 @@ namespace AvoidFriendlyFire
             foreach (var pawn in map.mapPawns.FreeColonists)
             {
                 if (pawn.Dead)
-                    continue;
-
-                if (pawn == shooterPawn)
                     continue;
 
                 var pawnCell = pawn.Position;

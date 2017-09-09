@@ -6,7 +6,7 @@ namespace AvoidFriendlyFire
     [HarmonyPatch(typeof(Verb), "CanHitTargetFrom")]
     public class Verb_CanHitTargetFrom_Patch
     {
-        public static void Postfix(ref Verb __instance, ref bool __result, LocalTargetInfo targ)
+        public static void Postfix(ref Verb __instance, ref bool __result, IntVec3 root, LocalTargetInfo targ)
         {
             if (!Main.Instance.IsModEnabled())
                 return;
@@ -25,7 +25,7 @@ namespace AvoidFriendlyFire
             if (!FireCalculations.HasValidWeapon(pawn))
                 return;
 
-            __result = Main.Instance.GetFireManager().CanHitTargetSafely(pawn, targ.Cell);
+            __result = Main.Instance.GetFireManager().CanHitTargetSafely(root, targ.Cell);
         }
     }
 }
