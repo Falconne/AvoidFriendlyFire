@@ -1,4 +1,8 @@
-﻿using Harmony;
+﻿using System;
+using System.Collections.Generic;
+using Harmony;
+using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -7,20 +11,21 @@ namespace AvoidFriendlyFire
     [HarmonyPatch(typeof(AttackTargetFinder), "BestAttackTarget")]
     public class AttackTargetFinder_BestAttackTarget_Patch
     {
-        public static void Postfix(ref IAttackTarget __result, IAttackTargetSearcher searcher)
+        public static bool Prefix(IAttackTargetSearcher searcher, ref Predicate<Thing> validator)
         {
             if (!Main.Instance.IsModEnabled())
-                return;
+                return true;
 
-            if (__result?.Thing == null)
-                return;
+            if (validator != null)
+                return true;
 
-            var shootingPawn = searcher?.Thing as Pawn;
-            if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoifFriendlyFire(shootingPawn))
-                return;
+            var shooter = searcher.Thing as Pawn;
+            if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoidFriendlyFire(shooter))
+                return true;
 
-            if (!Main.Instance.GetFireManager().CanHitTargetSafely(shootingPawn.Position, __result.Thing.Position))
-                __result = null;
+            validator = target => Main.Instance.GetFireManager().CanHitTargetSafely(shooter.Position, target.Position);
+
+            return true;
         }
-    }
+   }
 }
