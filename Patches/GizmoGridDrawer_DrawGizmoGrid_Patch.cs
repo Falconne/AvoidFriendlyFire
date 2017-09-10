@@ -14,14 +14,15 @@ namespace AvoidFriendlyFire.Patches
             if (!Main.Instance.IsModEnabled())
                 return true;
 
+            var extendedDataStore = Main.Instance.GetExtendedDataStorage();
             var pawn = Main.GetSelectedDraftedPawn();
-            if (pawn == null)
+            if (!extendedDataStore.canTrackPawn(pawn))
                 return true;
 
             if (!FireCalculations.HasValidWeapon(pawn))
                 return true;
 
-            var pawnData = Main.Instance.GetExtendedDataStorage().GetExtendedDataFor(pawn);
+            var pawnData = extendedDataStore.GetExtendedDataFor(pawn);
 
             var gizmoList = gizmos.ToList();
             var ourGizmo = new Command_Toggle

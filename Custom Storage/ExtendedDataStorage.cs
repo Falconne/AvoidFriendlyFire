@@ -43,17 +43,14 @@ namespace AvoidFriendlyFire
             return newExtendedData;
         }
 
-        public bool IsTrackedPawn(Pawn pawn)
+        public bool canTrackPawn(Pawn pawn)
         {
-            if (pawn == null)
-                return false;
-
-            return _store.ContainsKey(pawn.thingIDNumber);
+            return pawn?.Faction != null && pawn.Faction == Faction.OfPlayer;
         }
 
-        public bool ShouldPawnAvoifFriendlyFire(Pawn pawn)
+        public bool ShouldPawnAvoidFriendlyFire(Pawn pawn)
         {
-            if (!IsTrackedPawn(pawn))
+            if (!canTrackPawn(pawn))
                 return false;
 
             if (!GetExtendedDataFor(pawn).AvoidFriendlyFire)
