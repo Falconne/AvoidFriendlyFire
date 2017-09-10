@@ -71,7 +71,7 @@ namespace AvoidFriendlyFire
         private void BuildFireCone()
         {
             _fireCone = null;
-            var pawn = Main.GetSelectedDraftedPawn();
+            var pawn = Main.GetSelectedPawn();
             if (pawn == null)
                 return;
 

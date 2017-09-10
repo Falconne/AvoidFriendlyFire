@@ -15,7 +15,7 @@ namespace AvoidFriendlyFire.Patches
                 return true;
 
             var extendedDataStore = Main.Instance.GetExtendedDataStorage();
-            var pawn = Main.GetSelectedDraftedPawn();
+            var pawn = Main.GetSelectedPawn();
             if (!extendedDataStore.canTrackPawn(pawn))
                 return true;
 

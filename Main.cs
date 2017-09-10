@@ -88,17 +88,13 @@ namespace AvoidFriendlyFire
             return _protectColonyAnimals;
         }
 
-        public static Pawn GetSelectedDraftedPawn()
+        public static Pawn GetSelectedPawn()
         {
             List<object> selectedObjects = Find.Selector.SelectedObjects;
             if (selectedObjects == null || selectedObjects.Count != 1)
                 return null;
 
-            var pawn = selectedObjects.First() as Pawn;
-            if (pawn == null || !pawn.Drafted)
-                return null;
-
-            return pawn;
+            return selectedObjects.First() as Pawn;
         }
 
         public ExtendedDataStorage GetExtendedDataStorage()
