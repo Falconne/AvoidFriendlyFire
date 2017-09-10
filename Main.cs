@@ -24,6 +24,8 @@ namespace AvoidFriendlyFire
 
         private SettingHandle<bool> _showOverlay;
 
+        private SettingHandle<bool> _protectColonyAnimals;
+
         private SettingHandle<bool> _modEnabled;
 
         public Main()
@@ -69,11 +71,21 @@ namespace AvoidFriendlyFire
                 "showOverlay", "Show targeting overlay",
                 "When manually targeting a ranged weapon, highlight all tiles the projectile could pass through, accounting for miss radius.",
                 true);
+
+            _protectColonyAnimals = Settings.GetHandle(
+                "protectColonyAnimals", "Protect All Tame Animals",
+                "When Off, only trained animals with a master are protected. When On, all tame animals belonging to the colony are protected. May cause performance issues on lower end machines with large numbers of livestock.",
+                false);
         }
 
         public void UpdateFireConeOverlay(bool enabled)
         {
             _fireConeOverlay?.Update(_showOverlay && enabled);
+        }
+
+        public bool ShouldProtectAllColonyAnimals()
+        {
+            return _protectColonyAnimals;
         }
 
         public static Pawn GetSelectedDraftedPawn()

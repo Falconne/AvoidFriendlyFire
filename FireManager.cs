@@ -34,17 +34,12 @@ namespace AvoidFriendlyFire
                     if (pawn.IsPrisoner)
                         continue;
 
-                    if (pawn.Faction != Faction.OfPlayer && pawn.Faction.HostileTo(Faction.OfPlayer))
+                    if (pawn.HostileTo(Faction.OfPlayer))
                         continue;
                 }
-                else
+                else if (!ShouldProtectAnimal(pawn))
                 {
-                    if (pawn.Faction != Faction.OfPlayer)
-                        continue;
-
-                    // Only consider animals assigned to a master for now
-                    if (pawn.playerSettings?.master == null)
-                        continue;
+                    continue;
                 }
 
                 var pawnCell = pawn.Position;
@@ -57,6 +52,20 @@ namespace AvoidFriendlyFire
             }
 
             return true;
+        }
+
+        private bool ShouldProtectAnimal(Pawn animal)
+        {
+            if (animal.Faction != Faction.OfPlayer)
+                return false;
+
+            if (Main.Instance.ShouldProtectAllColonyAnimals())
+                return true;
+
+            if (animal.playerSettings?.master != null)
+                return true;
+
+            return false;
         }
 
         public void RemoveExpiredCones(int currentTick)
