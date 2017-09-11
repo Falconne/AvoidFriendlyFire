@@ -2,6 +2,7 @@
 using System.Linq;
 using Harmony;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace AvoidFriendlyFire.Patches
@@ -13,6 +14,12 @@ namespace AvoidFriendlyFire.Patches
         {
             if (!Main.Instance.IsModEnabled())
                 return true;
+
+            if (Find.VisibleMap == null || Find.World == null || Find.World.renderer == null ||
+                Find.World.renderer.wantedMode == WorldRenderMode.Planet)
+            {
+                return true;
+            }
 
             var extendedDataStore = Main.Instance.GetExtendedDataStorage();
             var pawn = Main.GetSelectedPawn();
