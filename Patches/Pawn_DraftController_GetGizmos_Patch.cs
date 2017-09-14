@@ -5,33 +5,36 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace AvoidFriendlyFire.Patches
+namespace AvoidFriendlyFire
 {
-    [HarmonyPatch(typeof(GizmoGridDrawer), "DrawGizmoGrid")]
-    public class GizmoGridDrawer_DrawGizmoGrid_Patch
+    [HarmonyPatch(typeof(Pawn_DraftController), "GetGizmos")]
+    public class Pawn_DraftController_GetGizmos_Patch
     {
-        public static bool Prefix(ref IEnumerable<Gizmo> gizmos)
+        public static void Postfix(ref IEnumerable<Gizmo> __result, ref Pawn_DraftController __instance)
         {
             if (!Main.Instance.IsModEnabled())
-                return true;
+                return;
 
             if (Find.VisibleMap == null || Find.World == null || Find.World.renderer == null ||
                 Find.World.renderer.wantedMode == WorldRenderMode.Planet)
             {
-                return true;
+                return;
             }
 
+            if (__result == null || !__result.Any())
+                return;
+
             var extendedDataStore = Main.Instance.GetExtendedDataStorage();
-            var pawn = Main.GetSelectedPawn();
+            var pawn = __instance.pawn;
             if (!extendedDataStore.canTrackPawn(pawn))
-                return true;
+                return;
 
             if (!FireCalculations.HasValidWeapon(pawn))
-                return true;
+                return;
 
             var pawnData = extendedDataStore.GetExtendedDataFor(pawn);
 
-            var gizmoList = gizmos.ToList();
+            var gizmoList = __result.ToList();
             var ourGizmo = new Command_Toggle
             {
                 defaultLabel = "Avoid Friendly Fire",
@@ -40,9 +43,7 @@ namespace AvoidFriendlyFire.Patches
                 toggleAction = () => pawnData.AvoidFriendlyFire = !pawnData.AvoidFriendlyFire
             };
             gizmoList.Add(ourGizmo);
-            gizmos = gizmoList;
-
-            return true;
+            __result = gizmoList;
         }
     }
 }
