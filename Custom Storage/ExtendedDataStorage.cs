@@ -62,10 +62,8 @@ namespace AvoidFriendlyFire
             return true;
         }
 
-        // TODO Delete extended data when Pawn is killed
         public void DeleteExtendedDataFor(Pawn pawn)
         {
-            // TODO implement
             _store.Remove(pawn.thingIDNumber);
         }
     }

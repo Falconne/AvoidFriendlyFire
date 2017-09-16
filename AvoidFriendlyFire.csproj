@@ -60,6 +60,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Patches\AttackTargetFinder_BestAttackTarget_Patch.cs" />
     <Compile Include="Patches\Pawn_DraftController_GetGizmos_Patch.cs" />
+    <Compile Include="Patches\Pawn_Kill_Patch.cs" />
     <Compile Include="Patches\Targeter_TargeterUpdate_Patch.cs" />
     <Compile Include="Patches\Verb_CanHitTargetFrom_Patch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
