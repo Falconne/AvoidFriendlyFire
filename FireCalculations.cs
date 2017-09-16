@@ -8,28 +8,27 @@ namespace AvoidFriendlyFire
     {
         public static bool HasValidWeapon(Pawn pawn)
         {
-            var primaryWeaponVerb = GetEquippedProjectileWeaponVerb(pawn);
-            if (primaryWeaponVerb == null)
+            var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
+
+            if (primaryWeaponVerb?.verbProps?.projectileDef?.projectile == null)
                 return false;
 
             if (primaryWeaponVerb.verbProps.forcedMissRadius > 0.5f)
                 // Can't handle miniguns and such
                 return false;
 
-            if (primaryWeaponVerb.HighlightFieldRadiusAroundTarget() > 0.2f)
+            if (primaryWeaponVerb.verbProps.projectileDef.projectile.explosionRadius > 0.2f)
                 // Can't handle explosive projectiles yet
                 return false;
 
             // TODO check if projectile is flyOverhead
-            //if (!primaryWeaponVerb.canFreeInterceptNow)
 
             return true;
         }
 
         public static float GetEquippedWeaponRange(Pawn pawn)
         {
-            var primaryWeaponVerb = GetEquippedProjectileWeaponVerb(pawn);
-
+            var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
             return primaryWeaponVerb?.verbProps.range ?? 0;
         }
 
@@ -60,9 +59,9 @@ namespace AvoidFriendlyFire
             return result;
         }
 
-        private static Verb_LaunchProjectile GetEquippedProjectileWeaponVerb(Pawn pawn)
+        private static Verb GetEquippedWeaponVerb(Pawn pawn)
         {
-            return pawn.equipment?.PrimaryEq?.PrimaryVerb as Verb_LaunchProjectile;
+            return pawn.equipment?.PrimaryEq?.PrimaryVerb;
         }
 
         private static IEnumerable<int> GetShootablePointsBetween(

@@ -75,6 +75,20 @@ namespace AvoidFriendlyFire
                 "protectColonyAnimals", "Protect All Tame Animals",
                 "When Off, only trained animals with a master are protected. When On, all tame animals belonging to the colony are protected. May cause performance issues on lower end machines with large numbers of livestock.",
                 false);
+
+            var ceVerb = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
+            if (ceVerb == null)
+                return;
+
+            Logger.Message("Patching CombatExtended methods");
+            var vecType = AccessTools.TypeByName("Verse.IntVec3");
+            var ltiType = AccessTools.TypeByName("Verse.LocalTargetInfo");
+
+            var original = ceVerb.GetMethod("CanHitTargetFrom",
+                new [] {vecType, ltiType });
+
+            var postfix = typeof(Verb_CanHitTargetFrom_Patch).GetMethod("Postfix");
+            HarmonyInst.Patch(original, null, new HarmonyMethod(postfix));
         }
 
         public void UpdateFireConeOverlay(bool enabled)
