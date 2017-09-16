@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using Harmony;
-using RimWorld;
-using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -23,7 +20,8 @@ namespace AvoidFriendlyFire
             if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoidFriendlyFire(shooter))
                 return true;
 
-            validator = target => Main.Instance.GetFireManager().CanHitTargetSafely(shooter.Position, target.Position);
+            validator = target => Main.Instance.GetFireManager().CanHitTargetSafely(
+                shooter.Position, target.Position);
 
             return true;
         }

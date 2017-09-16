@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Harmony;
 using HugsLib.Settings;
 using HugsLib.Utils;
-using RimWorld;
 using Verse;
 
 namespace AvoidFriendlyFire
