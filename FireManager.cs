@@ -5,8 +5,6 @@ using Verse;
 
 namespace AvoidFriendlyFire
 {
-    // TODO clear expired cones
-
     public class FireManager
     {
         private readonly Dictionary<int, Dictionary<int, CachedFireCone>> _cachedFireCones

@@ -32,10 +32,10 @@ namespace AvoidFriendlyFire
             return primaryWeaponVerb?.verbProps.range ?? 0;
         }
 
-        public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target)
+        public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target, float forcedMissRadius)
         {
             var result = new HashSet<int>();
-            
+
             result.Clear();
 
             Map map = Find.VisibleMap;
@@ -46,12 +46,12 @@ namespace AvoidFriendlyFire
             if (target == origin)
                 return null;
 
-            // Create fire cone using target and the 8 cells adjacent to target
-            for (var xSplash = target.x - 1; xSplash <= target.x + 1; xSplash++)
+            if (forcedMissRadius < 0.5f)
             {
-                for (var zSplash = target.z - 1; zSplash <= target.z + 1; zSplash++)
+                // Create fire cone using target and the 8 cells adjacent to target
+                for (var i = 0; i < 8; i++)
                 {
-                    var splashTarget = new IntVec3(xSplash, target.y, zSplash);
+                    var splashTarget = origin + GenAdj.AdjacentCells[i];
                     result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
                 }
             }
