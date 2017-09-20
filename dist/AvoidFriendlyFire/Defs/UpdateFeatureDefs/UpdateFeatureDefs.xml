@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    <HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
+        <modNameReadable>Avoid Friendly Fire</modNameReadable>
+        <modIdentifier>AvoidFriendlyFire</modIdentifier>
+        <linkUrl>https://ludeon.com/forums/index.php?topic=35571.0</linkUrl>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>AvoidFriendlyFire_0_17_6</defName>
+        <assemblyVersion>0.17.6</assemblyVersion>
+        <content>Mod now supports weapons with forced miss radius, such as miniguns</content>
+    </HugsLib.UpdateFeatureDef>
+</Defs>

@@ -13,10 +13,6 @@ namespace AvoidFriendlyFire
             if (primaryWeaponVerb?.verbProps?.projectileDef?.projectile == null)
                 return false;
 
-            if (primaryWeaponVerb.verbProps.forcedMissRadius > 0.5f)
-                // Can't handle miniguns and such
-                return false;
-
             if (primaryWeaponVerb.verbProps.projectileDef.projectile.explosionRadius > 0.2f)
                 // Can't handle explosive projectiles yet
                 return false;
@@ -45,7 +41,7 @@ namespace AvoidFriendlyFire
 
             result.Clear();
 
-            Map map = Find.VisibleMap;
+            var map = Find.VisibleMap;
 
             if (!target.InBounds(map) || target.Fogged(map))
                 return null;
@@ -53,7 +49,35 @@ namespace AvoidFriendlyFire
             if (target == origin)
                 return null;
 
-            if (forcedMissRadius < 0.5f)
+            var adjustedMissRadius = forcedMissRadius;
+            if (forcedMissRadius > 0.5f)
+            {
+                var distanceToTarget = (target - origin).LengthHorizontalSquared;
+                if (distanceToTarget < 9f)
+                {
+                    adjustedMissRadius = 0f;
+                }
+                else if (distanceToTarget < 25f)
+                {
+                    adjustedMissRadius *= 0.5f;
+                }
+                else if (distanceToTarget < 49f)
+                {
+                    adjustedMissRadius *= 0.8f;
+                }
+            }
+
+            if (adjustedMissRadius > 0.5f)
+            {
+                // Create fire cone using miss radius
+                var max = GenRadial.NumCellsInRadius(forcedMissRadius);
+                for (var i = 0; i < max; i++)
+                {
+                    var splashTarget = target + GenRadial.RadialPattern[i];
+                    result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
+                }
+            }
+            else
             {
                 // Create fire cone using target and the 8 cells adjacent to target
                 for (var i = 0; i < 8; i++)
