@@ -25,7 +25,9 @@ namespace AvoidFriendlyFire
             if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoidFriendlyFire(pawn))
                 return;
 
-            __result = Main.Instance.GetFireManager().CanHitTargetSafely(root, targ.Cell);
+            var weaponMissRadius = FireCalculations.GetEquippedWeaponMissRadius(pawn);
+            __result = Main.Instance.GetFireManager().CanHitTargetSafely(
+                root, targ.Cell, weaponMissRadius);
         }
     }
 }

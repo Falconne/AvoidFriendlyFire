@@ -12,9 +12,9 @@ namespace AvoidFriendlyFire
 
         private int _lastCleanupTick;
 
-        public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target)
+        public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target, float weaponMissRadius)
         {
-            HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target);
+            HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target, weaponMissRadius);
             if (fireCone == null)
                 return true;
 
@@ -94,7 +94,8 @@ namespace AvoidFriendlyFire
             }
         }
 
-        private HashSet<int> GetOrCreatedCachedFireConeFor(IntVec3 origin, IntVec3 target)
+        private HashSet<int> GetOrCreatedCachedFireConeFor(
+            IntVec3 origin, IntVec3 target, float weaponMissRadius)
         {
             var map = Find.VisibleMap;
             var originIndex = map.cellIndices.CellToIndex(origin);
@@ -112,7 +113,8 @@ namespace AvoidFriendlyFire
                 }
             }
 
-            var newFireCone = new CachedFireCone(FireCalculations.GetFireCone(origin, target));
+            var newFireCone = new CachedFireCone(
+                FireCalculations.GetFireCone(origin, target, weaponMissRadius));
             if (!_cachedFireCones.ContainsKey(originIndex))
                 _cachedFireCones.Add(originIndex, new Dictionary<int, CachedFireCone>());
             _cachedFireCones[originIndex][targetIndex] = newFireCone;

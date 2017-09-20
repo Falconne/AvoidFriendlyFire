@@ -20,8 +20,9 @@ namespace AvoidFriendlyFire
             if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoidFriendlyFire(shooter))
                 return true;
 
+            var weaponMissRadius = FireCalculations.GetEquippedWeaponMissRadius(shooter);
             validator = target => Main.Instance.GetFireManager().CanHitTargetSafely(
-                shooter.Position, target.Position);
+                shooter.Position, target.Position, weaponMissRadius);
 
             return true;
         }

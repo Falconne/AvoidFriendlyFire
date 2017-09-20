@@ -83,7 +83,8 @@ namespace AvoidFriendlyFire
             if (pawnCell.DistanceTo(targetCell) > FireCalculations.GetEquippedWeaponRange(pawn))
                 return;
 
-            _fireCone = FireCalculations.GetFireCone(pawn.Position, targetCell);
+            var weaponMissRadius = FireCalculations.GetEquippedWeaponMissRadius(pawn);
+            _fireCone = FireCalculations.GetFireCone(pawn.Position, targetCell, weaponMissRadius);
         }
     }
 }

@@ -26,6 +26,13 @@ namespace AvoidFriendlyFire
             return true;
         }
 
+        public static float GetEquippedWeaponMissRadius(Pawn pawn)
+        {
+            var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
+
+            return primaryWeaponVerb.verbProps.forcedMissRadius;
+        }
+
         public static float GetEquippedWeaponRange(Pawn pawn)
         {
             var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
@@ -51,7 +58,7 @@ namespace AvoidFriendlyFire
                 // Create fire cone using target and the 8 cells adjacent to target
                 for (var i = 0; i < 8; i++)
                 {
-                    var splashTarget = origin + GenAdj.AdjacentCells[i];
+                    var splashTarget = target + GenAdj.AdjacentCells[i];
                     result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
                 }
             }
