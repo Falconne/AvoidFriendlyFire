@@ -38,7 +38,6 @@ namespace AvoidFriendlyFire
         public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target, float forcedMissRadius)
         {
             var result = new HashSet<int>();
-
             result.Clear();
 
             var map = Find.VisibleMap;
@@ -49,6 +48,7 @@ namespace AvoidFriendlyFire
             if (target == origin)
                 return null;
 
+            // Forced miss radius is reduced at close range
             var adjustedMissRadius = forcedMissRadius;
             if (forcedMissRadius > 0.5f)
             {
@@ -67,6 +67,30 @@ namespace AvoidFriendlyFire
                 }
             }
 
+            result.UnionWith(GetShootablePointsBetween(origin, target, map));
+            if (result.Count == 0)
+            {
+                // If we got here the shot is possible, but there is no straight LoS.
+                // Must be shooting around a corner, we need to use a different origin.
+                var leaningPositions = new List<IntVec3>();
+                ShootLeanUtility.LeanShootingSourcesFromTo(origin, target, map, leaningPositions);
+                foreach (var leaningPosition in leaningPositions)
+                {
+                    result.UnionWith(GetShootablePointsBetween(leaningPosition, target, map));
+                    if (result.Count != 0)
+                    {
+                        origin = leaningPosition;
+                        break;
+                    }
+                }
+            }
+
+            if (result.Count == 0)
+            {
+                // Something has gone wrong
+                return null;
+            }
+
             // Create fire cone using target and the 8 cells adjacent to target
             var adjustmentVector = GenAdj.AdjacentCells;
             var adjustmentCount = 8;
@@ -81,6 +105,8 @@ namespace AvoidFriendlyFire
             for (var i = 0; i < adjustmentCount; i++)
             {
                 var splashTarget = target + adjustmentVector[i];
+                if (splashTarget == target)
+                    continue;  // Already done direct line to target
                 result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
             }
 
