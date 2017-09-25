@@ -67,25 +67,23 @@ namespace AvoidFriendlyFire
                 }
             }
 
+            // Create fire cone using target and the 8 cells adjacent to target
+            var adjustmentVector = GenAdj.AdjacentCells;
+            var adjustmentCount = 8;
+
             if (adjustedMissRadius > 0.5f)
             {
-                // Create fire cone using miss radius
-                var max = GenRadial.NumCellsInRadius(forcedMissRadius);
-                for (var i = 0; i < max; i++)
-                {
-                    var splashTarget = target + GenRadial.RadialPattern[i];
-                    result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
-                }
+                // Create fire cone using full miss radius
+                adjustmentVector = GenRadial.RadialPattern;
+                adjustmentCount = GenRadial.NumCellsInRadius(forcedMissRadius);
             }
-            else
+
+            for (var i = 0; i < adjustmentCount; i++)
             {
-                // Create fire cone using target and the 8 cells adjacent to target
-                for (var i = 0; i < 8; i++)
-                {
-                    var splashTarget = target + GenAdj.AdjacentCells[i];
-                    result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
-                }
+                var splashTarget = target + adjustmentVector[i];
+                result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
             }
+
 
             return result;
         }
