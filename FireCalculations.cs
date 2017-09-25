@@ -141,8 +141,7 @@ namespace AvoidFriendlyFire
                 yield return map.cellIndices.CellToIndex(point.x, point.z);
             }
 
-            if (!IsInCloseRange(origin, target))
-                yield return map.cellIndices.CellToIndex(target.x, target.z);
+            yield return map.cellIndices.CellToIndex(target.x, target.z);
         }
 
         private static bool IsInCloseRange(IntVec3 origin, IntVec3 point)
