@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -67,8 +68,7 @@ namespace AvoidFriendlyFire
                 }
             }
 
-            result.UnionWith(GetShootablePointsBetween(origin, target, map));
-            if (result.Count == 0)
+            if (!IsClearShotTo(origin, target, map))
             {
                 // If we got here the shot is possible, but there is no straight LoS.
                 // Must be shooting around a corner, we need to use a different origin.
@@ -76,19 +76,12 @@ namespace AvoidFriendlyFire
                 ShootLeanUtility.LeanShootingSourcesFromTo(origin, target, map, leaningPositions);
                 foreach (var leaningPosition in leaningPositions)
                 {
-                    result.UnionWith(GetShootablePointsBetween(leaningPosition, target, map));
-                    if (result.Count != 0)
+                    if (IsClearShotTo(leaningPosition, target, map))
                     {
                         origin = leaningPosition;
                         break;
                     }
                 }
-            }
-
-            if (result.Count == 0)
-            {
-                // Something has gone wrong
-                return null;
             }
 
             // Create fire cone using target and the 8 cells adjacent to target
@@ -105,8 +98,6 @@ namespace AvoidFriendlyFire
             for (var i = 0; i < adjustmentCount; i++)
             {
                 var splashTarget = target + adjustmentVector[i];
-                if (splashTarget == target)
-                    continue;  // Already done direct line to target
                 result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
             }
 
@@ -119,30 +110,53 @@ namespace AvoidFriendlyFire
             return pawn.equipment?.PrimaryEq?.PrimaryVerb;
         }
 
+        private static bool IsClearShotTo(IntVec3 origin, IntVec3 target, Map map)
+        {
+            var lineStarted = false;
+            foreach (var point in GenSight.PointsOnLineOfSight(origin, target))
+            {
+                if (!point.CanBeSeenOver(map))
+                    return false;
+
+                lineStarted = true;
+            }
+
+            return lineStarted;
+        }
+
         private static IEnumerable<int> GetShootablePointsBetween(
             IntVec3 origin, IntVec3 target, Map map)
         {
-            foreach (IntVec3 point in GenSight.PointsOnLineOfSight(origin, target))
+            foreach (var point in GenSight.PointsOnLineOfSight(origin, target))
             {
                 if (!point.CanBeSeenOver(map))
                     yield break;
 
                 // Nearby pawns do not receive friendly fire
-                var checkedCellToOriginDistance = point - origin;
+                if (IsInCloseRange(origin, point))
                 {
-                    var xDiff = Math.Abs(checkedCellToOriginDistance.x);
-                    var zDiff = Math.Abs(checkedCellToOriginDistance.z);
-                    if ((xDiff == 0 && zDiff < 5) || (zDiff == 0 && xDiff < 5))
-                        continue;
-
-                    if (xDiff > 0 && zDiff > 0 && xDiff + zDiff < 6)
-                        continue;
+                    continue;
                 }
 
                 yield return map.cellIndices.CellToIndex(point.x, point.z);
             }
 
-            yield return map.cellIndices.CellToIndex(target.x, target.z);
+            if (!IsInCloseRange(origin, target))
+                yield return map.cellIndices.CellToIndex(target.x, target.z);
+        }
+
+        private static bool IsInCloseRange(IntVec3 origin, IntVec3 point)
+        {
+            var checkedCellToOriginDistance = point - origin;
+            var xDiff = Math.Abs(checkedCellToOriginDistance.x);
+            var zDiff = Math.Abs(checkedCellToOriginDistance.z);
+            if ((xDiff == 0 && zDiff < 5) || (zDiff == 0 && xDiff < 5))
+                return true;
+
+            if (xDiff > 0 && zDiff > 0 && xDiff + zDiff < 6)
+                return true;
+
+            return false;
         }
     }
 }
