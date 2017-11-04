@@ -50,6 +50,7 @@
     <Compile Include="FireConeOverlay.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\AttackTargetFinder_BestAttackTarget_Patch.cs" />
+    <Compile Include="Patches\PawnNameColorUtility_PawnNameColorOf_Patch.cs" />
     <Compile Include="Patches\Pawn_DraftController_GetGizmos_Patch.cs" />
     <Compile Include="Patches\Pawn_Kill_Patch.cs" />
     <Compile Include="Patches\Targeter_TargeterUpdate_Patch.cs" />

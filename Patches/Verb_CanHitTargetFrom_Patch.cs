@@ -22,12 +22,18 @@ namespace AvoidFriendlyFire
                 return;
 
             var pawn = __instance.CasterPawn;
-            if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoidFriendlyFire(pawn))
+            var extendedDataStorage = Main.Instance.GetExtendedDataStorage();
+            if (!extendedDataStorage.ShouldPawnAvoidFriendlyFire(pawn))
                 return;
 
             var weaponMissRadius = FireCalculations.GetEquippedWeaponMissRadius(pawn);
             __result = Main.Instance.GetFireManager().CanHitTargetSafely(
                 root, targ.Cell, weaponMissRadius);
+
+            if (!__result)
+            {
+                extendedDataStorage.GetExtendedDataFor(pawn).SetBlocked();
+            }
         }
     }
 }

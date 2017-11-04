@@ -17,12 +17,23 @@ namespace AvoidFriendlyFire
                 return true;
 
             var shooter = searcher.Thing as Pawn;
-            if (!Main.Instance.GetExtendedDataStorage().ShouldPawnAvoidFriendlyFire(shooter))
+            var extendedDataStorage = Main.Instance.GetExtendedDataStorage();
+            if (!extendedDataStorage.ShouldPawnAvoidFriendlyFire(shooter))
                 return true;
 
             var weaponMissRadius = FireCalculations.GetEquippedWeaponMissRadius(shooter);
-            validator = target => Main.Instance.GetFireManager().CanHitTargetSafely(
-                shooter.Position, target.Position, weaponMissRadius);
+            validator = target =>
+            {
+                var result = Main.Instance.GetFireManager().CanHitTargetSafely(
+                    shooter.Position, target.Position, weaponMissRadius);
+
+                if (!result)
+                {
+                    extendedDataStorage.GetExtendedDataFor(shooter).SetBlocked();
+                }
+
+                return result;
+            };
 
             return true;
         }
