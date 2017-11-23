@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorld;
 using Verse;
 
@@ -11,6 +12,12 @@ namespace AvoidFriendlyFire
             = new Dictionary<int, Dictionary<int, CachedFireCone>>();
 
         private int _lastCleanupTick;
+
+        private static readonly FieldInfo EnergyGetter = typeof(ShieldBelt).GetField("Energy",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+
+        private static readonly FieldInfo EnergyMaxGetter = typeof(ShieldBelt).GetField("EnergyMax",
+            BindingFlags.NonPublic | BindingFlags.Instance);
 
         public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target, float weaponMissRadius)
         {
@@ -45,11 +52,38 @@ namespace AvoidFriendlyFire
                     continue;
 
                 var pawnIndex = map.cellIndices.CellToIndex(pawnCell);
-                if (fireCone.Contains(pawnIndex))
-                    return false;
+                if (!fireCone.Contains(pawnIndex))
+                    continue;
+
+                if (IsPawnWearingUsefulShield(pawn))
+                    continue;
+
+                return false;
             }
 
             return true;
+        }
+
+        private bool IsPawnWearingUsefulShield(Pawn pawn)
+        {
+            if (pawn.apparel == null)
+                return false;
+
+            foreach (Apparel apparel in pawn.apparel.WornApparel)
+            {
+                var shield = apparel as ShieldBelt;
+                if (shield == null)
+                    continue;
+
+                if (shield.ShieldState != ShieldState.Active)
+                    return false;
+
+                var energy = (float) EnergyGetter.GetValue(shield);
+                var energyMax = (float) EnergyMaxGetter.GetValue(shield);
+                return energy / energyMax > 0.2f;
+            }
+
+            return false;
         }
 
         private bool ShouldProtectAnimal(Pawn animal)
