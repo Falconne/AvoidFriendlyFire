@@ -11,10 +11,10 @@ namespace AvoidFriendlyFire
         {
             var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
 
-            if (primaryWeaponVerb?.verbProps?.projectileDef?.projectile == null)
+            if (primaryWeaponVerb?.verbProps?.defaultProjectile?.projectile == null)
                 return false;
 
-            if (primaryWeaponVerb.verbProps.projectileDef.projectile.explosionRadius > 0.2f)
+            if (primaryWeaponVerb.verbProps.defaultProjectile.projectile.explosionRadius > 0.2f)
                 // Can't handle explosive projectiles yet
                 return false;
 

@@ -18,7 +18,8 @@ namespace AvoidFriendlyFire
             if (__instance.targetingVerb.verbProps.MeleeRange)
                 return;
 
-            if (__instance.targetingVerb.HighlightFieldRadiusAroundTarget() > 0.2f)
+            bool dummy;
+            if (__instance.targetingVerb.HighlightFieldRadiusAroundTarget(out dummy) > 0.2f)
                 return;
 
             Main.Instance.UpdateFireConeOverlay(true);
