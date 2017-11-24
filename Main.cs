@@ -25,6 +25,8 @@ namespace AvoidFriendlyFire
 
         private SettingHandle<bool> _protectColonyAnimals;
 
+        private SettingHandle<bool> _ignoreShieldedPawns;
+
         private SettingHandle<bool> _modEnabled;
 
         public Main()
@@ -76,6 +78,11 @@ namespace AvoidFriendlyFire
                 "When Off, only trained animals with a master are protected. When On, all tame animals belonging to the colony are protected. May cause performance issues on lower end machines with large numbers of livestock.",
                 false);
 
+            _ignoreShieldedPawns = Settings.GetHandle(
+                "ignoreShieldedPawns", "Ignore pawns with active shield belts",
+                "Shooters will not worry about pawns wearing a shield belt with at least 10% power standing in the line of fire.",
+                true);
+
             var ceVerb = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
             if (ceVerb == null)
                 return;
@@ -99,6 +106,11 @@ namespace AvoidFriendlyFire
         public bool ShouldProtectAllColonyAnimals()
         {
             return _protectColonyAnimals;
+        }
+
+        public bool ShouldIgnoreShieldedPawns()
+        {
+            return _ignoreShieldedPawns;
         }
 
         public static Pawn GetSelectedPawn()

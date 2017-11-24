@@ -11,4 +11,10 @@
         <assemblyVersion>0.17.6</assemblyVersion>
         <content>Mod now supports weapons with forced miss radius, such as miniguns</content>
     </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>AvoidFriendlyFire_0_18_2</defName>
+        <assemblyVersion>0.18.2</assemblyVersion>
+        <content>Shooters will no longer worry about pawns wearing a shield belt with at least 10% power standing in the line of fire. You can now attack with shielded infantry while ranged troops continue to fire over them from behind. If the shield drops below 10% power while the pawn is still subject to friendly fire, then the shooters will stop. They will resume shooting after the shield gets above 10%. This behaviour can be disabled from the mod options if needed.</content>
+    </HugsLib.UpdateFeatureDef>
 </Defs>

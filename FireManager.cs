@@ -13,12 +13,6 @@ namespace AvoidFriendlyFire
 
         private int _lastCleanupTick;
 
-        private static readonly FieldInfo EnergyGetter = typeof(ShieldBelt).GetField("Energy",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-
-        private static readonly FieldInfo EnergyMaxGetter = typeof(ShieldBelt).GetField("EnergyMax",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-
         public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target, float weaponMissRadius)
         {
             HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target, weaponMissRadius);
@@ -66,6 +60,9 @@ namespace AvoidFriendlyFire
 
         private bool IsPawnWearingUsefulShield(Pawn pawn)
         {
+            if (!Main.Instance.ShouldIgnoreShieldedPawns())
+                return false;
+
             if (pawn.apparel == null)
                 return false;
 
@@ -78,9 +75,8 @@ namespace AvoidFriendlyFire
                 if (shield.ShieldState != ShieldState.Active)
                     return false;
 
-                var energy = (float) EnergyGetter.GetValue(shield);
-                var energyMax = (float) EnergyMaxGetter.GetValue(shield);
-                return energy / energyMax > 0.2f;
+                var energyMax = shield.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
+                return shield.Energy / energyMax > 0.1f;
             }
 
             return false;
