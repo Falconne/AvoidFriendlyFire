@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Harmony;
 using HugsLib.Settings;
@@ -83,19 +84,29 @@ namespace AvoidFriendlyFire
                 "Shooters will not worry about pawns wearing a shield belt with at least 10% power standing in the line of fire.",
                 true);
 
-            var ceVerb = AccessTools.TypeByName("CombatExtended.Verb_LaunchProjectileCE");
-            if (ceVerb == null)
-                return;
+            try
+            {
+                var ceVerb = GenTypes.GetTypeInAnyAssembly("CombatExtended.Verb_LaunchProjectileCE");
+                if (ceVerb == null)
+                    return;
 
-            Logger.Message("Patching CombatExtended methods");
-            var vecType = AccessTools.TypeByName("Verse.IntVec3");
-            var ltiType = AccessTools.TypeByName("Verse.LocalTargetInfo");
+                Logger.Message("Patching CombatExtended methods");
+                var vecType = AccessTools.TypeByName("Verse.IntVec3");
+                var ltiType = AccessTools.TypeByName("Verse.LocalTargetInfo");
 
-            var original = ceVerb.GetMethod("CanHitTargetFrom",
-                new [] {vecType, ltiType });
+                var original = ceVerb.GetMethod("CanHitTargetFrom",
+                    new [] {vecType, ltiType });
 
-            var postfix = typeof(Verb_CanHitTargetFrom_Patch).GetMethod("Postfix");
-            HarmonyInst.Patch(original, null, new HarmonyMethod(postfix));
+                var postfix = typeof(Verb_CanHitTargetFrom_Patch).GetMethod("Postfix");
+                HarmonyInst.Patch(original, null, new HarmonyMethod(postfix));
+
+            }
+            catch (Exception e)
+            {
+                Logger.Error("Exception while trying to detect CombatExtended:");
+                Logger.Error(e.Message);
+                Logger.Error(e.StackTrace);
+            }
         }
 
         public void UpdateFireConeOverlay(bool enabled)
