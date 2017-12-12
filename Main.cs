@@ -91,8 +91,8 @@ namespace AvoidFriendlyFire
                     return;
 
                 Logger.Message("Patching CombatExtended methods");
-                var vecType = AccessTools.TypeByName("Verse.IntVec3");
-                var ltiType = AccessTools.TypeByName("Verse.LocalTargetInfo");
+                var vecType = GenTypes.GetTypeInAnyAssembly("Verse.IntVec3");
+                var ltiType = GenTypes.GetTypeInAnyAssembly("Verse.LocalTargetInfo");
 
                 var original = ceVerb.GetMethod("CanHitTargetFrom",
                     new [] {vecType, ltiType });
