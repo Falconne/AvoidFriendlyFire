@@ -141,7 +141,8 @@ namespace AvoidFriendlyFire
                 yield return map.cellIndices.CellToIndex(point.x, point.z);
             }
 
-            yield return map.cellIndices.CellToIndex(target.x, target.z);
+            if (!IsAdjacent(origin, target))
+                yield return map.cellIndices.CellToIndex(target.x, target.z);
         }
 
         private static bool IsInCloseRange(IntVec3 origin, IntVec3 point)
@@ -154,6 +155,20 @@ namespace AvoidFriendlyFire
 
             if (xDiff > 0 && zDiff > 0 && xDiff + zDiff < 6)
                 return true;
+
+            return false;
+        }
+
+        private static bool IsAdjacent(IntVec3 origin, IntVec3 point)
+        {
+            IntVec3[] adjustmentVector = GenAdj.AdjacentCells;
+            const int adjustmentCount = 8;
+            for (var i = 0; i < adjustmentCount; i++)
+            {
+                var adjacentPoint = origin + adjustmentVector[i];
+                if (point == adjacentPoint)
+                    return true;
+            }
 
             return false;
         }
