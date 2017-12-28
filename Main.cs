@@ -88,7 +88,7 @@ namespace AvoidFriendlyFire
 
             _enableWhenUndrafted = Settings.GetHandle(
                 "enableWhenUndrafted", "Always enable when undrafted",
-                "If you tend to disable the 'Avoid Friendly Fire' setting on certain pawns during combat, using this option will ensure it is always turned back on again when they are undrafted.",
+                "If you tend to disable the 'Avoid Friendly Fire' setting on pawns during combat, using this option will ensure it is always turned back on again when they are undrafted.",
                 false);
 
             try
