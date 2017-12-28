@@ -30,6 +30,8 @@ namespace AvoidFriendlyFire
 
         private SettingHandle<bool> _modEnabled;
 
+        private SettingHandle<bool> _enableWhenUndrafted;
+
         public Main()
         {
             Instance = this;
@@ -84,6 +86,11 @@ namespace AvoidFriendlyFire
                 "Shooters will not worry about pawns wearing a shield belt with at least 10% power standing in the line of fire.",
                 true);
 
+            _enableWhenUndrafted = Settings.GetHandle(
+                "enableWhenUndrafted", "Always enable when undrafted",
+                "If you tend to disable the 'Avoid Friendly Fire' setting on certain pawns during combat, using this option will ensure it is always turned back on again when they are undrafted.",
+                false);
+
             try
             {
                 var ceVerb = GenTypes.GetTypeInAnyAssembly("CombatExtended.Verb_LaunchProjectileCE");
@@ -122,6 +129,11 @@ namespace AvoidFriendlyFire
         public bool ShouldIgnoreShieldedPawns()
         {
             return _ignoreShieldedPawns;
+        }
+
+        public bool ShouldEnableWhenUndrafted()
+        {
+            return _enableWhenUndrafted;
         }
 
         public static Pawn GetSelectedPawn()

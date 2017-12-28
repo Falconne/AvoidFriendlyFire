@@ -26,7 +26,7 @@ namespace AvoidFriendlyFire
 
             var extendedDataStore = Main.Instance.GetExtendedDataStorage();
             var pawn = __instance.pawn;
-            if (!extendedDataStore.canTrackPawn(pawn))
+            if (!extendedDataStore.CanTrackPawn(pawn))
                 return;
 
             if (!FireCalculations.HasValidWeapon(pawn))
