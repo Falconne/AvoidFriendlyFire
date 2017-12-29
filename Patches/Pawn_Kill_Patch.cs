@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System;
+using Harmony;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -8,13 +9,23 @@ namespace AvoidFriendlyFire
     {
         public static void Postfix(ref Pawn __instance)
         {
-            if (!Main.Instance.IsModEnabled())
+            if (__instance == null)
                 return;
 
-            if (!__instance.Dead)
-                return;
+            try
+            {
+                if (!Main.Instance.IsModEnabled())
+                    return;
 
-            Main.Instance.GetExtendedDataStorage().DeleteExtendedDataFor(__instance);
+                if (!__instance.Dead)
+                    return;
+
+                Main.Instance.GetExtendedDataStorage().DeleteExtendedDataFor(__instance);
+
+            }
+            catch (Exception )
+            {
+            }
         }
     }
 }
