@@ -67,28 +67,25 @@ namespace AvoidFriendlyFire
             base.DefsLoaded();
 
             _modEnabled = Settings.GetHandle(
-                "enabled", "Enable Mod",
-                "If mod is causing problems, please log a bug and disable from here till an update is available, so as to preserve yours settings.",
-                true);
+                "enabled", "FALCFF.EnableMod".Translate(), "FALCFF.EnableModDesc".Translate(), true);
 
             _showOverlay = Settings.GetHandle(
-                "showOverlay", "Show targeting overlay",
-                "When manually targeting a ranged weapon, highlight all tiles the projectile could pass through, accounting for miss radius.",
-                true);
+                "showOverlay", "FALCFF.ShowTargetingOverlay".Translate(),
+                "FALCFF.ShowTargetingOverlayDesc".Translate(), true);
 
             _protectColonyAnimals = Settings.GetHandle(
-                "protectColonyAnimals", "Protect All Tame Animals",
-                "When Off, only trained animals with a master are protected. When On, all tame animals belonging to the colony are protected. May cause performance issues on lower end machines with large numbers of livestock.",
+                "protectColonyAnimals", "FALCFF.ProtectColonyAnimals".Translate(), 
+                "FALCFF.ProtectColonyAnimalsDesc".Translate(),
                 false);
 
             _ignoreShieldedPawns = Settings.GetHandle(
-                "ignoreShieldedPawns", "Ignore pawns with active shield belts",
-                "Shooters will not worry about pawns wearing a shield belt with at least 10% power standing in the line of fire.",
+                "ignoreShieldedPawns", "FALCFF.IgnoreShieldedPawns".Translate(),
+                "FALCFF.IgnoreShieldedPawnsDesc".Translate(),
                 true);
 
             _enableWhenUndrafted = Settings.GetHandle(
-                "enableWhenUndrafted", "Always enable when undrafted",
-                "If you tend to disable the 'Avoid Friendly Fire' setting on pawns during combat, using this option will ensure it is always turned back on again when they are undrafted.",
+                "enableWhenUndrafted", "FALCFF.EnableWhenUndrafted".Translate(),
+                "FALCFF.EnableWhenUndraftedDesc".Translate(),
                 false);
 
             try

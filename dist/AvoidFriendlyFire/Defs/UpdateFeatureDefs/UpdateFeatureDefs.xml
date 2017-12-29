@@ -21,6 +21,6 @@
     <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
         <defName>AvoidFriendlyFire_0_18_5</defName>
         <assemblyVersion>0.18.5</assemblyVersion>
-        <content>Added a setting in Mod Options to always enable 'Avoid FF' status on a pawn when it's undrafted (off by default). If you tend to disable the 'Avoid FF' setting on pawns during combat, using this option will ensure it is always turned back on again before the next combat.</content>
+        <content>Added a setting in Mod Options to always enable 'Avoid FF' status on a pawn when it's undrafted. If you tend to disable the 'Avoid FF' setting on pawns during combat, using this option will ensure it is always turned back on again before the next combat. This new option is off by default.</content>
     </HugsLib.UpdateFeatureDef>
 </Defs>
