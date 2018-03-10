@@ -7,6 +7,9 @@
   <FALCFF.ShowTargetingOverlay>照準を画面上で表示</FALCFF.ShowTargetingOverlay>
   <FALCFF.ShowTargetingOverlayDesc>射撃武器を手動で目標を指定するときは、弾丸が通過できるタイルをすべて強調表示して、命中ミスが起きる半径を考慮できるようにします。</FALCFF.ShowTargetingOverlayDesc>
 
+  <FALCFF.ProtectPets>ペットを保護</FALCFF.ProtectPets>
+  <FALCFF.ProtectPetsDesc>入植者が保護されるのと同じように、主人が割り当てられてる調教された動物たちを保護します。</FALCFF.ProtectPetsDesc>
+
   <FALCFF.ProtectColonyAnimals>すべてのペットを保護</FALCFF.ProtectColonyAnimals>
   <FALCFF.ProtectColonyAnimalsDesc>オフにすると、主人を持つ訓練をされた動物だけが保護対象になります。オンにすると、コロニーに所属するすべてのペット/家畜動物が保護対象になります。ただし、多数の家畜がいる低スペックPCマシンではパフォーマンスの問題が発生する可能性があります。</FALCFF.ProtectColonyAnimalsDesc>
 
