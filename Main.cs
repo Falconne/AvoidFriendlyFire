@@ -24,6 +24,8 @@ namespace AvoidFriendlyFire
 
         private SettingHandle<bool> _showOverlay;
 
+        private SettingHandle<bool> _protectPets;
+
         private SettingHandle<bool> _protectColonyAnimals;
 
         private SettingHandle<bool> _ignoreShieldedPawns;
@@ -73,8 +75,13 @@ namespace AvoidFriendlyFire
                 "showOverlay", "FALCFF.ShowTargetingOverlay".Translate(),
                 "FALCFF.ShowTargetingOverlayDesc".Translate(), true);
 
+            _protectPets = Settings.GetHandle(
+                "protectPets", "FALCFF.ProtectPets".Translate(),
+                "FALCFF.ProtectPetsDesc".Translate(),
+                true);
+
             _protectColonyAnimals = Settings.GetHandle(
-                "protectColonyAnimals", "FALCFF.ProtectColonyAnimals".Translate(), 
+                "protectColonyAnimals", "FALCFF.ProtectColonyAnimals".Translate(),
                 "FALCFF.ProtectColonyAnimalsDesc".Translate(),
                 false);
 
@@ -116,6 +123,11 @@ namespace AvoidFriendlyFire
         public void UpdateFireConeOverlay(bool enabled)
         {
             _fireConeOverlay?.Update(_showOverlay && enabled);
+        }
+
+        public bool ShouldProtectPets()
+        {
+            return _protectPets;
         }
 
         public bool ShouldProtectAllColonyAnimals()

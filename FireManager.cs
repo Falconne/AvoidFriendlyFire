@@ -82,7 +82,7 @@ namespace AvoidFriendlyFire
             return false;
         }
 
-        private bool ShouldProtectAnimal(Pawn animal)
+        private static bool ShouldProtectAnimal(Pawn animal)
         {
             if (animal.Faction != Faction.OfPlayer)
                 return false;
@@ -90,10 +90,10 @@ namespace AvoidFriendlyFire
             if (Main.Instance.ShouldProtectAllColonyAnimals())
                 return true;
 
-            if (animal.playerSettings?.master != null)
-                return true;
+            if (!Main.Instance.ShouldProtectPets())
+                return false;
 
-            return false;
+            return animal.playerSettings?.master != null;
         }
 
         public void RemoveExpiredCones(int currentTick)

@@ -23,4 +23,10 @@
         <assemblyVersion>0.18.5</assemblyVersion>
         <content>Added a setting in Mod Options to always enable 'Avoid FF' status on a pawn when it's undrafted. If you tend to disable the 'Avoid FF' setting on pawns during combat, using this option will ensure it is always turned back on again before the next combat. This new option is off by default.</content>
     </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>AvoidFriendlyFire_0_18_6</defName>
+        <assemblyVersion>0.18.6</assemblyVersion>
+        <content>Pet protection can now be turned off in Mod Options if desired. This can be useful when using tamed boomrats as weapons, or with certain mods.</content>
+    </HugsLib.UpdateFeatureDef>
 </Defs>

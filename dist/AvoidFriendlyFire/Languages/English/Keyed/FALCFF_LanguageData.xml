@@ -6,8 +6,11 @@
   <FALCFF.ShowTargetingOverlay>Show targeting overlay</FALCFF.ShowTargetingOverlay>
   <FALCFF.ShowTargetingOverlayDesc>When manually targeting a ranged weapon, highlight all tiles the projectile could pass through, accounting for miss radius.</FALCFF.ShowTargetingOverlayDesc>
 
+  <FALCFF.ProtectPets>Protect Pets</FALCFF.ProtectPets>
+  <FALCFF.ProtectPetsDesc>Protect trained animals with an assigned master, the same way colonists are protected.</FALCFF.ProtectPetsDesc>
+
   <FALCFF.ProtectColonyAnimals>Protect All Tame Animals</FALCFF.ProtectColonyAnimals>
-  <FALCFF.ProtectColonyAnimalsDesc>When Off, only trained animals with a master are protected. When On, all tame animals belonging to the colony are protected. May cause performance issues on lower end machines with large numbers of livestock.</FALCFF.ProtectColonyAnimalsDesc>
+  <FALCFF.ProtectColonyAnimalsDesc>Protect all tame animals belonging to the colony. May cause performance issues on lower end machines with large numbers of livestock.</FALCFF.ProtectColonyAnimalsDesc>
 
   <FALCFF.IgnoreShieldedPawns>Ignore pawns with active shield belts</FALCFF.IgnoreShieldedPawns>
   <FALCFF.IgnoreShieldedPawnsDesc>Shooters will not worry about pawns wearing a shield belt with at least 10% power standing in the line of fire.</FALCFF.IgnoreShieldedPawnsDesc>
