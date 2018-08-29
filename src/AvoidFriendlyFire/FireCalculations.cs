@@ -41,7 +41,7 @@ namespace AvoidFriendlyFire
             var result = new HashSet<int>();
             result.Clear();
 
-            var map = Find.VisibleMap;
+            var map = Find.CurrentMap;
 
             if (!target.InBounds(map) || target.Fogged(map))
                 return null;

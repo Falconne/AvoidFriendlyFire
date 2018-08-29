@@ -19,7 +19,7 @@ namespace AvoidFriendlyFire
             {
                 if (_drawerInt == null)
                 {
-                    var map = Find.VisibleMap;
+                    var map = Find.CurrentMap;
                     _drawerInt = new CellBoolDrawer(this, map.Size.x, map.Size.z, 0.33f);
                 }
                 return _drawerInt;

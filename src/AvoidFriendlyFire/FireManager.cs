@@ -19,7 +19,7 @@ namespace AvoidFriendlyFire
             if (fireCone == null)
                 return true;
 
-            var map = Find.VisibleMap;
+            var map = Find.CurrentMap;
             foreach (var pawn in map.mapPawns.AllPawns)
             {
                 if (pawn?.RaceProps == null || pawn.Dead)
@@ -93,7 +93,7 @@ namespace AvoidFriendlyFire
             if (!Main.Instance.ShouldProtectPets())
                 return false;
 
-            return animal.playerSettings?.master != null;
+            return animal.playerSettings?.Master != null;
         }
 
         public void RemoveExpiredCones(int currentTick)
@@ -127,7 +127,7 @@ namespace AvoidFriendlyFire
         private HashSet<int> GetOrCreatedCachedFireConeFor(
             IntVec3 origin, IntVec3 target, float weaponMissRadius)
         {
-            var map = Find.VisibleMap;
+            var map = Find.CurrentMap;
             var originIndex = map.cellIndices.CellToIndex(origin);
             var targetIndex = map.cellIndices.CellToIndex(target);
 

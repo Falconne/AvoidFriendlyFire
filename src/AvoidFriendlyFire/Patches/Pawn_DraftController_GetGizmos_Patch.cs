@@ -15,7 +15,7 @@ namespace AvoidFriendlyFire
             if (!Main.Instance.IsModEnabled())
                 return;
 
-            if (Find.VisibleMap == null || Find.World == null || Find.World.renderer == null ||
+            if (Find.CurrentMap == null || Find.World == null || Find.World.renderer == null ||
                 Find.World.renderer.wantedMode == WorldRenderMode.Planet)
             {
                 return;
