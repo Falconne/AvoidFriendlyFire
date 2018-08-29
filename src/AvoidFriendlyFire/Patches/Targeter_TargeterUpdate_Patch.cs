@@ -15,7 +15,7 @@ namespace AvoidFriendlyFire
             if (__instance.targetingVerb == null)
                 return;
 
-            if (__instance.targetingVerb.verbProps.MeleeRange)
+            if (__instance.targetingVerb.verbProps.IsMeleeAttack)
                 return;
 
             bool dummy;
