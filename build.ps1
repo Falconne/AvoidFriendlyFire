@@ -1,3 +1,8 @@
+# TODO:
+# 1. Update ThirdParty automatically when Game updates
+# 2. Update assemblyinfo.cs when needed based on last git tag
+# 3. Update HugsLib version checker's Version.xml
+
 param
 (
     [Parameter(Mandatory = $true)]
