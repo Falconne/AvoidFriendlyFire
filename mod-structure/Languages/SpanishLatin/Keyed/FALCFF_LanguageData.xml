@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <FALCFF.EnableModDesc>Si este mod está causando problemas, por favor, registre el error y desactívelo desde aquí hasta que haya una actualización disponible, para preservar su configuración.</FALCFF.EnableModDesc>
+  <FALCFF.EnableMod>Activar Mod</FALCFF.EnableMod>
+  
+  <FALCFF.ShowTargetingOverlay>Mostrar el area de tiro</FALCFF.ShowTargetingOverlay>
+  <FALCFF.ShowTargetingOverlayDesc>Cuando se apunte manualmente con un arma de largo alcance se resaltarán todas las casillas que el proyectil pueda atravesar, incluyendo el margen de error.</FALCFF.ShowTargetingOverlayDesc>
+
+  <FALCFF.ProtectPets>Proteger mascotas</FALCFF.ProtectPets>
+  <FALCFF.ProtectPetsDesc>Proteja a los animales adiestrados con un maestro asignado, de la misma manera que se protege a los colonos.</FALCFF.ProtectPetsDesc>
+
+  <FALCFF.ProtectColonyAnimals>Proteger a todos los animales domesticados</FALCFF.ProtectColonyAnimals>
+  <FALCFF.ProtectColonyAnimalsDesc>Proteger a todos los animales domesticados de la colonia. Puede causar problemas de rendimiento en máquinas de gama baja con gran cantidad de ganado.</FALCFF.ProtectColonyAnimalsDesc>
+
+  <FALCFF.IgnoreShieldedPawns>Ignorar colonos con un cinturón de protección activo</FALCFF.IgnoreShieldedPawns>
+  <FALCFF.IgnoreShieldedPawnsDesc>Los tiradores no se preocuparán de que los peones usen un cinturón de protección con al menos un 10% de potencia dentro de la línea de tiro.</FALCFF.IgnoreShieldedPawnsDesc>
+
+  <FALCFF.EnableWhenUndrafted>Reactivar siempre que no se esté peleando</FALCFF.EnableWhenUndrafted>
+  <FALCFF.EnableWhenUndraftedDesc>Si tiende a desactivar la opción "Avoid Friendly Fire" en colonos durante el combate, al usar esta opción se asegura de que siempre vuelva a activarse de nuevo cuando no estén en combate.</FALCFF.EnableWhenUndraftedDesc>
+</LanguageData>
