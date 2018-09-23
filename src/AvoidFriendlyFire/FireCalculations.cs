@@ -49,25 +49,6 @@ namespace AvoidFriendlyFire
             if (target == origin)
                 return null;
 
-            // Forced miss radius is reduced at close range
-            var adjustedMissRadius = forcedMissRadius;
-            if (forcedMissRadius > 0.5f)
-            {
-                var distanceToTarget = (target - origin).LengthHorizontalSquared;
-                if (distanceToTarget < 9f)
-                {
-                    adjustedMissRadius = 0f;
-                }
-                else if (distanceToTarget < 25f)
-                {
-                    adjustedMissRadius *= 0.5f;
-                }
-                else if (distanceToTarget < 49f)
-                {
-                    adjustedMissRadius *= 0.8f;
-                }
-            }
-
             if (!IsClearShotTo(origin, target, map))
             {
                 // If we got here the shot is possible, but there is no straight LoS.
@@ -88,6 +69,7 @@ namespace AvoidFriendlyFire
             var adjustmentVector = GenAdj.AdjacentCells;
             var adjustmentCount = 8;
 
+            var adjustedMissRadius = CalculateAdjustedForcedMiss(forcedMissRadius, target - origin);
             if (adjustedMissRadius > 0.5f)
             {
                 // Create fire cone using full miss radius
@@ -104,6 +86,14 @@ namespace AvoidFriendlyFire
 
             return result;
         }
+
+        private static float CalculateAdjustedForcedMiss(float forcedMiss, IntVec3 vector)
+        {
+            return forcedMiss <= 0.5f
+                ? 0f
+                : VerbUtility.CalculateAdjustedForcedMiss(forcedMiss, vector);
+        }
+
 
         private static Verb GetEquippedWeaponVerb(Pawn pawn)
         {
