@@ -51,6 +51,7 @@
     <Compile Include="FireCalculations.cs" />
     <Compile Include="FireManager.cs" />
     <Compile Include="FireConeOverlay.cs" />
+    <Compile Include="FireProperties.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\AttackTargetFinder_BestAttackTarget_Patch.cs" />
     <Compile Include="Patches\Pawn_DraftController_GetGizmos_Patch.cs" />

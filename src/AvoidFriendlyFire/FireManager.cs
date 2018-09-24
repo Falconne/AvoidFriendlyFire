@@ -143,8 +143,8 @@ namespace AvoidFriendlyFire
                 }
             }
 
-            var newFireCone = new CachedFireCone(
-                FireCalculations.GetFireCone(origin, target, weaponMissRadius));
+            var fireProperties = new FireProperties(map, origin, target, weaponMissRadius);
+            var newFireCone = new CachedFireCone(FireCalculations.GetFireCone(fireProperties));
             if (!_cachedFireCones.ContainsKey(originIndex))
                 _cachedFireCones.Add(originIndex, new Dictionary<int, CachedFireCone>());
             _cachedFireCones[originIndex][targetIndex] = newFireCone;

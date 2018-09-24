@@ -36,51 +36,34 @@ namespace AvoidFriendlyFire
             return primaryWeaponVerb?.verbProps.range ?? 0;
         }
 
-        public static HashSet<int> GetFireCone(IntVec3 origin, IntVec3 target, float forcedMissRadius)
+        public static HashSet<int> GetFireCone(FireProperties fireProperties)
         {
-            var result = new HashSet<int>();
-            result.Clear();
-
-            var map = Find.CurrentMap;
-
-            if (!target.InBounds(map) || target.Fogged(map))
+            if (!fireProperties.ArePointsVisibleAndValid())
                 return null;
 
-            if (target == origin)
-                return null;
-
-            if (!IsClearShotTo(origin, target, map))
-            {
-                // If we got here the shot is possible, but there is no straight LoS.
-                // Must be shooting around a corner, we need to use a different origin.
-                var leaningPositions = new List<IntVec3>();
-                ShootLeanUtility.LeanShootingSourcesFromTo(origin, target, map, leaningPositions);
-                foreach (var leaningPosition in leaningPositions)
-                {
-                    if (IsClearShotTo(leaningPosition, target, map))
-                    {
-                        origin = leaningPosition;
-                        break;
-                    }
-                }
-            }
+            fireProperties.AdjustForLeaning();
 
             // Create fire cone using target and the 8 cells adjacent to target
             var adjustmentVector = GenAdj.AdjacentCells;
             var adjustmentCount = 8;
 
-            var adjustedMissRadius = CalculateAdjustedForcedMiss(forcedMissRadius, target - origin);
+            var adjustedMissRadius = CalculateAdjustedForcedMiss(
+                fireProperties.ForcedMissRadius, fireProperties.Target - fireProperties.Origin);
+
             if (adjustedMissRadius > 0.5f)
             {
                 // Create fire cone using full miss radius
                 adjustmentVector = GenRadial.RadialPattern;
-                adjustmentCount = GenRadial.NumCellsInRadius(forcedMissRadius);
+                adjustmentCount = GenRadial.NumCellsInRadius(fireProperties.ForcedMissRadius);
             }
 
+            var result = new HashSet<int>();
+            result.Clear();
+            var map = Find.CurrentMap;
             for (var i = 0; i < adjustmentCount; i++)
             {
-                var splashTarget = target + adjustmentVector[i];
-                result.UnionWith(GetShootablePointsBetween(origin, splashTarget, map));
+                var splashTarget = fireProperties.Target + adjustmentVector[i];
+                result.UnionWith(GetShootablePointsBetween(fireProperties.Origin, splashTarget, map));
             }
 
 
@@ -98,20 +81,6 @@ namespace AvoidFriendlyFire
         private static Verb GetEquippedWeaponVerb(Pawn pawn)
         {
             return pawn.equipment?.PrimaryEq?.PrimaryVerb;
-        }
-
-        private static bool IsClearShotTo(IntVec3 origin, IntVec3 target, Map map)
-        {
-            var lineStarted = false;
-            foreach (var point in GenSight.PointsOnLineOfSight(origin, target))
-            {
-                if (!point.CanBeSeenOver(map))
-                    return false;
-
-                lineStarted = true;
-            }
-
-            return lineStarted;
         }
 
         private static IEnumerable<int> GetShootablePointsBetween(

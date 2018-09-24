@@ -84,7 +84,8 @@ namespace AvoidFriendlyFire
                 return;
 
             var weaponMissRadius = FireCalculations.GetEquippedWeaponMissRadius(pawn);
-            _fireCone = FireCalculations.GetFireCone(pawn.Position, targetCell, weaponMissRadius);
+            var fireProperties = new FireProperties(Find.CurrentMap, pawn.Position, targetCell, weaponMissRadius);
+            _fireCone = FireCalculations.GetFireCone(fireProperties);
         }
     }
 }
