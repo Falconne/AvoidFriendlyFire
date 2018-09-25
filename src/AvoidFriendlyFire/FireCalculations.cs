@@ -70,6 +70,11 @@ namespace AvoidFriendlyFire
             return result;
         }
 
+        public static Verb GetEquippedWeaponVerb(Pawn pawn)
+        {
+            return pawn.equipment?.PrimaryEq?.PrimaryVerb;
+        }
+
         private static float CalculateAdjustedForcedMiss(float forcedMiss, IntVec3 vector)
         {
             return forcedMiss <= 0.5f
@@ -77,11 +82,6 @@ namespace AvoidFriendlyFire
                 : VerbUtility.CalculateAdjustedForcedMiss(forcedMiss, vector);
         }
 
-
-        private static Verb GetEquippedWeaponVerb(Pawn pawn)
-        {
-            return pawn.equipment?.PrimaryEq?.PrimaryVerb;
-        }
 
         private static IEnumerable<int> GetShootablePointsBetween(
             IntVec3 origin, IntVec3 target, Map map)

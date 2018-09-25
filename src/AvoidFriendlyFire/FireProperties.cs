@@ -14,11 +14,11 @@ namespace AvoidFriendlyFire
         private readonly Thing _caster;
         private readonly Verb _weaponVerb;
 
-        public FireProperties(Thing caster, Verb weaponVerb, IntVec3 target)
+        public FireProperties(Pawn caster, IntVec3 target)
         {
             Target = target;
             _caster = caster;
-            _weaponVerb = weaponVerb;
+            _weaponVerb = FireCalculations.GetEquippedWeaponVerb(caster);
             Origin = _caster.Position;
         }
 
