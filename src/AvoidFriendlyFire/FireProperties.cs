@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using Verse;
 
 namespace AvoidFriendlyFire
@@ -47,6 +48,55 @@ namespace AvoidFriendlyFire
                 }
             }
 
+        }
+
+        public float GetAimOnTargetChance(Thing caster, Verb weaponVerb)
+        {
+            var distance = (Target - Origin).LengthHorizontal;
+
+            var factorFromShooterAndDist = ShotReport.HitFactorFromShooter(caster, distance);
+
+            var factorFromEquipment = weaponVerb.verbProps.GetHitChanceFactor(
+                weaponVerb.EquipmentSource, distance);
+
+            var factorFromWeather = 1f;
+            if (!caster.Position.Roofed(CurrentMap) || !Target.Roofed(CurrentMap))
+            {
+                factorFromWeather = caster.Map.weatherManager.CurWeatherAccuracyMultiplier;
+            }
+
+            ThingDef coveringGas = null;
+            foreach (var point in GenSight.PointsOnLineOfSight(Origin, Target))
+            {
+                if (!point.CanBeSeenOver(CurrentMap))
+                    break;
+
+                Thing gas = point.GetGas(CurrentMap);
+                if (IsThisGasMorePenalisingThan(gas, coveringGas))
+                {
+                    coveringGas = gas.def;
+                }
+            }
+
+            var factorFromCoveringGas = 1f - (coveringGas?.gas.accuracyPenalty ?? 0f);
+
+            var result = factorFromShooterAndDist * factorFromEquipment * factorFromWeather *
+                         factorFromCoveringGas;
+            if (result < 0.0201f)
+                result = 0.0201f;
+
+            return result;
+        }
+
+        private static bool IsThisGasMorePenalisingThan(Thing gas, ThingDef otherGas)
+        {
+            if (gas == null)
+                return false;
+
+            if (otherGas == null)
+                return true;
+
+            return otherGas.gas.accuracyPenalty < gas.def.gas.accuracyPenalty;
         }
 
         private bool HasClearShotFrom(IntVec3 tryFromOrigin)
