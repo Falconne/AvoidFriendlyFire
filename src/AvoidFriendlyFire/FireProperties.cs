@@ -1,22 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using Verse;
 
 namespace AvoidFriendlyFire
 {
     public class FireProperties
     {
-        public Map CurrentMap;
-        public IntVec3 Origin;
         public IntVec3 Target;
-        public float ForcedMissRadius;
+        
+        public Map CurrentMap => _caster.Map;
+        public IntVec3 Origin;
+        public float ForcedMissRadius => _weaponVerb.verbProps.forcedMissRadius;
 
-        public FireProperties(Map currentMap, IntVec3 origin, IntVec3 target, float forcedMissRadius)
+        private readonly Thing _caster;
+        private readonly Verb _weaponVerb;
+
+        public FireProperties(Thing caster, Verb weaponVerb, IntVec3 target)
         {
-            Origin = origin;
             Target = target;
-            ForcedMissRadius = forcedMissRadius;
-            CurrentMap = currentMap;
+            _caster = caster;
+            _weaponVerb = weaponVerb;
+            Origin = _caster.Position;
         }
 
         public bool ArePointsVisibleAndValid()
@@ -50,19 +53,19 @@ namespace AvoidFriendlyFire
 
         }
 
-        public float GetAimOnTargetChance(Thing caster, Verb weaponVerb)
+        public float GetAimOnTargetChance()
         {
             var distance = (Target - Origin).LengthHorizontal;
 
-            var factorFromShooterAndDist = ShotReport.HitFactorFromShooter(caster, distance);
+            var factorFromShooterAndDist = ShotReport.HitFactorFromShooter(_caster, distance);
 
-            var factorFromEquipment = weaponVerb.verbProps.GetHitChanceFactor(
-                weaponVerb.EquipmentSource, distance);
+            var factorFromEquipment = _weaponVerb.verbProps.GetHitChanceFactor(
+                _weaponVerb.EquipmentSource, distance);
 
             var factorFromWeather = 1f;
-            if (!caster.Position.Roofed(CurrentMap) || !Target.Roofed(CurrentMap))
+            if (!_caster.Position.Roofed(CurrentMap) || !Target.Roofed(CurrentMap))
             {
-                factorFromWeather = caster.Map.weatherManager.CurWeatherAccuracyMultiplier;
+                factorFromWeather = CurrentMap.weatherManager.CurWeatherAccuracyMultiplier;
             }
 
             ThingDef coveringGas = null;
