@@ -7,11 +7,19 @@ namespace AvoidFriendlyFire
     {
         public IntVec3 Target;
         
-        public Map CurrentMap => _caster.Map;
+        public Map CasterMap => _caster.Map;
+
         public IntVec3 Origin;
+
         public float ForcedMissRadius => _weaponVerb.verbProps.forcedMissRadius;
 
+        public int OriginIndex => CasterMap.cellIndices.CellToIndex(Origin);
+
+        public int TargetIndex => CasterMap.cellIndices.CellToIndex(Target);
+
+
         private readonly Thing _caster;
+
         private readonly Verb _weaponVerb;
 
         public FireProperties(Pawn caster, IntVec3 target)
@@ -27,7 +35,7 @@ namespace AvoidFriendlyFire
             if (Target == Origin)
                 return false;
 
-            if (!Target.InBounds(CurrentMap) || Target.Fogged(CurrentMap))
+            if (!Target.InBounds(CasterMap) || Target.Fogged(CasterMap))
                 return false;
 
             return true;
@@ -41,7 +49,7 @@ namespace AvoidFriendlyFire
             // If we got this far the shot is possible, but there is no straight LoS.
             // Must be shooting around a corner, so we need to use a different origin.
             var leaningPositions = new List<IntVec3>();
-            ShootLeanUtility.LeanShootingSourcesFromTo(Origin, Target, CurrentMap, leaningPositions);
+            ShootLeanUtility.LeanShootingSourcesFromTo(Origin, Target, CasterMap, leaningPositions);
             foreach (var leaningPosition in leaningPositions)
             {
                 if (HasClearShotFrom(leaningPosition))
@@ -63,18 +71,18 @@ namespace AvoidFriendlyFire
                 _weaponVerb.EquipmentSource, distance);
 
             var factorFromWeather = 1f;
-            if (!_caster.Position.Roofed(CurrentMap) || !Target.Roofed(CurrentMap))
+            if (!_caster.Position.Roofed(CasterMap) || !Target.Roofed(CasterMap))
             {
-                factorFromWeather = CurrentMap.weatherManager.CurWeatherAccuracyMultiplier;
+                factorFromWeather = CasterMap.weatherManager.CurWeatherAccuracyMultiplier;
             }
 
             ThingDef coveringGas = null;
             foreach (var point in GenSight.PointsOnLineOfSight(Origin, Target))
             {
-                if (!point.CanBeSeenOver(CurrentMap))
+                if (!point.CanBeSeenOver(CasterMap))
                     break;
 
-                Thing gas = point.GetGas(CurrentMap);
+                Thing gas = point.GetGas(CasterMap);
                 if (IsThisGasMorePenalisingThan(gas, coveringGas))
                 {
                     coveringGas = gas.def;
@@ -107,7 +115,7 @@ namespace AvoidFriendlyFire
             var lineStarted = false;
             foreach (var point in GenSight.PointsOnLineOfSight(tryFromOrigin, Target))
             {
-                if (!point.CanBeSeenOver(CurrentMap))
+                if (!point.CanBeSeenOver(CasterMap))
                     return false;
 
                 lineStarted = true;
