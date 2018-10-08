@@ -13,13 +13,13 @@ namespace AvoidFriendlyFire
 
         private int _lastCleanupTick;
 
-        public bool CanHitTargetSafely(IntVec3 origin, IntVec3 target, float weaponMissRadius)
+        public bool CanHitTargetSafely(FireProperties fireProperties)
         {
-            HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(origin, target, weaponMissRadius);
+            HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(fireProperties);
             if (fireCone == null)
                 return true;
 
-            var map = Find.CurrentMap;
+            var map = fireProperties.CasterMap;
             foreach (var pawn in map.mapPawns.AllPawns)
             {
                 if (pawn?.RaceProps == null || pawn.Dead)
@@ -42,7 +42,7 @@ namespace AvoidFriendlyFire
                 }
 
                 var pawnCell = pawn.Position;
-                if (pawnCell == origin || pawnCell == target)
+                if (pawnCell == fireProperties.Origin || pawnCell == fireProperties.Target)
                     continue;
 
                 var pawnIndex = map.cellIndices.CellToIndex(pawnCell);
@@ -124,12 +124,10 @@ namespace AvoidFriendlyFire
             }
         }
 
-        private HashSet<int> GetOrCreatedCachedFireConeFor(
-            IntVec3 origin, IntVec3 target, float weaponMissRadius)
+        private HashSet<int> GetOrCreatedCachedFireConeFor(FireProperties fireProperties)
         {
-            var map = Find.CurrentMap;
-            var originIndex = map.cellIndices.CellToIndex(origin);
-            var targetIndex = map.cellIndices.CellToIndex(target);
+            var originIndex = fireProperties.OriginIndex;
+            var targetIndex = fireProperties.TargetIndex;
 
             if (_cachedFireCones.TryGetValue(originIndex, out var cachedFireConesFromOrigin))
             {
@@ -143,12 +141,12 @@ namespace AvoidFriendlyFire
                 }
             }
 
-            var fireProperties = new FireProperties(map, origin, target, weaponMissRadius);
+            // No cached firecone, create one
             var newFireCone = new CachedFireCone(FireCalculations.GetFireCone(fireProperties));
             if (!_cachedFireCones.ContainsKey(originIndex))
                 _cachedFireCones.Add(originIndex, new Dictionary<int, CachedFireCone>());
-            _cachedFireCones[originIndex][targetIndex] = newFireCone;
 
+            _cachedFireCones[originIndex][targetIndex] = newFireCone;
 
             return newFireCone.FireCone;
         }
