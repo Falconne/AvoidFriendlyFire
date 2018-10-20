@@ -3,5 +3,5 @@
   <name>Avoid Friendly Fire</name>
   <author>Falconne</author>
   <description>Adds an new shooting mode for ranged colonists that tells them not to shoot if there are friendlies in harms way.</description>
-  <targetVersion>0.19.2009</targetVersion>
+  <targetVersion>1.0.2059</targetVersion>
 </ModMetaData>
