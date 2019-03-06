@@ -143,6 +143,7 @@ namespace AvoidFriendlyFire
 
             // No cached firecone, create one
             var newFireCone = new CachedFireCone(FireCalculations.GetFireCone(fireProperties));
+
             if (!_cachedFireCones.ContainsKey(originIndex))
                 _cachedFireCones.Add(originIndex, new Dictionary<int, CachedFireCone>());
 
