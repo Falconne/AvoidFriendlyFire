@@ -6,7 +6,7 @@ namespace AvoidFriendlyFire
     public class FireProperties
     {
         public IntVec3 Target;
-        
+
         public Map CasterMap => _caster.Map;
 
         public IntVec3 Origin;
