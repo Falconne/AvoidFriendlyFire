@@ -34,6 +34,8 @@ namespace AvoidFriendlyFire
 
         private SettingHandle<bool> _enableWhenUndrafted;
 
+        private SettingHandle<bool> _enableAccurateMissRadius;
+
         public Main()
         {
             Instance = this;
@@ -95,6 +97,11 @@ namespace AvoidFriendlyFire
                 "FALCFF.EnableWhenUndraftedDesc".Translate(),
                 false);
 
+            _enableAccurateMissRadius = Settings.GetHandle(
+                "enableAccurateMissRadius", "FALCFF.EnableAccurateMissRadius".Translate(),
+                "FALCFF.EnableAccurateMissRadius".Translate(),
+                true);
+
             try
             {
                 var ceVerb = GenTypes.GetTypeInAnyAssembly("CombatExtended.Verb_LaunchProjectileCE");
@@ -143,6 +150,11 @@ namespace AvoidFriendlyFire
         public bool ShouldEnableWhenUndrafted()
         {
             return _enableWhenUndrafted;
+        }
+
+        public bool ShouldEnableAccurateMissRadius()
+        {
+            return _enableAccurateMissRadius;
         }
 
         public static Pawn GetSelectedPawn()

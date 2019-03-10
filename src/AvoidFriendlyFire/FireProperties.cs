@@ -3,6 +3,19 @@ using Verse;
 
 namespace AvoidFriendlyFire
 {
+    public struct MissAreaDescriptor
+    {
+        public IntVec3[] AdjustmentVector;
+        public int AdjustmentCount;
+
+        public MissAreaDescriptor(IntVec3[] adjustmentVector, int adjustmentCount)
+        {
+            AdjustmentVector = adjustmentVector;
+            AdjustmentCount = adjustmentCount;
+        }
+    }
+
+
     public class FireProperties
     {
         public IntVec3 Target;
@@ -125,5 +138,41 @@ namespace AvoidFriendlyFire
         }
 
 
+        public MissAreaDescriptor GetMissAreaDescriptor()
+        {
+            var adjustedMissRadius = CalculateAdjustedForcedMiss();
+
+            if (adjustedMissRadius > 0.5f)
+            {
+                // Create fire cone using weapon miss radius
+                return new MissAreaDescriptor(
+                    GenRadial.RadialPattern,
+                    GenRadial.NumCellsInRadius(ForcedMissRadius));
+            }
+
+            if (!Main.Instance.ShouldEnableAccurateMissRadius())
+            {
+                // Create fire cone using target and the 8 cells adjacent to target
+                return new MissAreaDescriptor(GenAdj.AdjacentCells, 8);
+            }
+
+            var missRadius = ShootTuning.MissDistanceFromAimOnChanceCurves.Evaluate(
+                GetAimOnTargetChance(), 1f);
+
+            if (missRadius < 0)
+                return new MissAreaDescriptor(GenAdj.AdjacentCells, 8);
+
+            return new MissAreaDescriptor(
+                GenRadial.RadialPattern,
+                GenRadial.NumCellsInRadius(missRadius));
+
+        }
+
+        private float CalculateAdjustedForcedMiss()
+        {
+            return ForcedMissRadius <= 0.5f
+                ? 0f
+                : VerbUtility.CalculateAdjustedForcedMiss(ForcedMissRadius, Target - Origin);
+        }
     }
 }
