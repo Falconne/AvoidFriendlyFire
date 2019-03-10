@@ -48,7 +48,7 @@ namespace AvoidFriendlyFire
                     BuildFireCone();
                     Drawer.SetDirty();
                 }
-                
+
             }
             Drawer.CellBoolDrawerUpdate();
         }

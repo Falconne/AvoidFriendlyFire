@@ -23,13 +23,6 @@ namespace AvoidFriendlyFire
             return true;
         }
 
-        public static float GetEquippedWeaponMissRadius(Pawn pawn)
-        {
-            var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
-
-            return primaryWeaponVerb.verbProps.forcedMissRadius;
-        }
-
         public static float GetEquippedWeaponRange(Pawn pawn)
         {
             var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
@@ -43,26 +36,14 @@ namespace AvoidFriendlyFire
 
             fireProperties.AdjustForLeaning();
 
-            // Create fire cone using target and the 8 cells adjacent to target
-            var adjustmentVector = GenAdj.AdjacentCells;
-            var adjustmentCount = 8;
-
-            var adjustedMissRadius = CalculateAdjustedForcedMiss(
-                fireProperties.ForcedMissRadius, fireProperties.Target - fireProperties.Origin);
-
-            if (adjustedMissRadius > 0.5f)
-            {
-                // Create fire cone using full miss radius
-                adjustmentVector = GenRadial.RadialPattern;
-                adjustmentCount = GenRadial.NumCellsInRadius(fireProperties.ForcedMissRadius);
-            }
+            var missAreaDescriptor = fireProperties.GetMissAreaDescriptor();
 
             var result = new HashSet<int>();
             result.Clear();
             var map = Find.CurrentMap;
-            for (var i = 0; i < adjustmentCount; i++)
+            for (var i = 0; i < missAreaDescriptor.AdjustmentCount; i++)
             {
-                var splashTarget = fireProperties.Target + adjustmentVector[i];
+                var splashTarget = fireProperties.Target + missAreaDescriptor.AdjustmentVector[i];
                 result.UnionWith(GetShootablePointsBetween(fireProperties.Origin, splashTarget, map));
             }
 
@@ -73,13 +54,6 @@ namespace AvoidFriendlyFire
         public static Verb GetEquippedWeaponVerb(Pawn pawn)
         {
             return pawn.equipment?.PrimaryEq?.PrimaryVerb;
-        }
-
-        private static float CalculateAdjustedForcedMiss(float forcedMiss, IntVec3 vector)
-        {
-            return forcedMiss <= 0.5f
-                ? 0f
-                : VerbUtility.CalculateAdjustedForcedMiss(forcedMiss, vector);
         }
 
 
