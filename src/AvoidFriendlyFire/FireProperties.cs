@@ -39,7 +39,7 @@ namespace AvoidFriendlyFire
         {
             Target = target;
             _caster = caster;
-            _weaponVerb = FireCalculations.GetEquippedWeaponVerb(caster);
+            _weaponVerb = GetEquippedWeaponVerb(caster);
             Origin = _caster.Position;
         }
 
@@ -173,6 +173,11 @@ namespace AvoidFriendlyFire
             return ForcedMissRadius <= 0.5f
                 ? 0f
                 : VerbUtility.CalculateAdjustedForcedMiss(ForcedMissRadius, Target - Origin);
+        }
+
+        public static Verb GetEquippedWeaponVerb(Pawn pawn)
+        {
+            return pawn.equipment?.PrimaryEq?.PrimaryVerb;
         }
     }
 }

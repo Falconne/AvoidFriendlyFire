@@ -29,7 +29,7 @@ namespace AvoidFriendlyFire
             if (!extendedDataStore.CanTrackPawn(pawn))
                 return;
 
-            if (!FireCalculations.HasValidWeapon(pawn))
+            if (!FireConeOverlay.HasValidWeapon(pawn))
                 return;
 
             var pawnData = extendedDataStore.GetExtendedDataFor(pawn);

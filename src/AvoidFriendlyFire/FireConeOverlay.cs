@@ -75,16 +75,38 @@ namespace AvoidFriendlyFire
             if (pawn == null)
                 return;
 
-            if (!FireCalculations.HasValidWeapon(pawn))
+            if (!HasValidWeapon(pawn))
                 return;
 
             var targetCell = UI.MouseCell();
             var pawnCell = pawn.Position;
-            if (pawnCell.DistanceTo(targetCell) > FireCalculations.GetEquippedWeaponRange(pawn))
+            if (pawnCell.DistanceTo(targetCell) > GetEquippedWeaponRange(pawn))
                 return;
 
             var fireProperties = new FireProperties(pawn, targetCell);
             _fireCone = FireCalculations.GetFireCone(fireProperties);
+        }
+
+        public static float GetEquippedWeaponRange(Pawn pawn)
+        {
+            var primaryWeaponVerb = FireProperties.GetEquippedWeaponVerb(pawn);
+            return primaryWeaponVerb?.verbProps.range ?? 0;
+        }
+
+        public static bool HasValidWeapon(Pawn pawn)
+        {
+            var primaryWeaponVerb = FireProperties.GetEquippedWeaponVerb(pawn);
+
+            if (primaryWeaponVerb?.verbProps?.defaultProjectile?.projectile == null)
+                return false;
+
+            if (primaryWeaponVerb.verbProps.defaultProjectile.projectile.explosionRadius > 0.2f)
+                // Can't handle explosive projectiles yet
+                return false;
+
+            // TODO check if projectile is flyOverhead
+
+            return true;
         }
     }
 }

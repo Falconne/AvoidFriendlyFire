@@ -7,28 +7,6 @@ namespace AvoidFriendlyFire
 {
     public class FireCalculations
     {
-        public static bool HasValidWeapon(Pawn pawn)
-        {
-            var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
-
-            if (primaryWeaponVerb?.verbProps?.defaultProjectile?.projectile == null)
-                return false;
-
-            if (primaryWeaponVerb.verbProps.defaultProjectile.projectile.explosionRadius > 0.2f)
-                // Can't handle explosive projectiles yet
-                return false;
-
-            // TODO check if projectile is flyOverhead
-
-            return true;
-        }
-
-        public static float GetEquippedWeaponRange(Pawn pawn)
-        {
-            var primaryWeaponVerb = GetEquippedWeaponVerb(pawn);
-            return primaryWeaponVerb?.verbProps.range ?? 0;
-        }
-
         public static HashSet<int> GetFireCone(FireProperties fireProperties)
         {
             if (!fireProperties.ArePointsVisibleAndValid())
@@ -50,12 +28,6 @@ namespace AvoidFriendlyFire
 
             return result;
         }
-
-        public static Verb GetEquippedWeaponVerb(Pawn pawn)
-        {
-            return pawn.equipment?.PrimaryEq?.PrimaryVerb;
-        }
-
 
         private static IEnumerable<int> GetShootablePointsBetween(
             IntVec3 origin, IntVec3 target, Map map)

@@ -54,7 +54,7 @@ namespace AvoidFriendlyFire
             if (!GetExtendedDataFor(pawn).AvoidFriendlyFire)
                 return false;
 
-            if (!FireCalculations.HasValidWeapon(pawn))
+            if (!FireConeOverlay.HasValidWeapon(pawn))
                 return false;
 
             return true;
