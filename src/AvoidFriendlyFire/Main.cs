@@ -99,7 +99,7 @@ namespace AvoidFriendlyFire
 
             _enableAccurateMissRadius = Settings.GetHandle(
                 "enableAccurateMissRadius", "FALCFF.EnableAccurateMissRadius".Translate(),
-                "FALCFF.EnableAccurateMissRadius".Translate(),
+                "FALCFF.EnableAccurateMissRadiusDesc".Translate(),
                 true);
 
             try
