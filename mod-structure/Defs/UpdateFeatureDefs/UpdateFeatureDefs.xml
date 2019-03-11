@@ -29,4 +29,10 @@
         <assemblyVersion>0.18.7</assemblyVersion>
         <content>Pet protection can now be turned off in Mod Options if desired. This can be useful when using tamed boomrats as weapons, or with certain mods.</content>
     </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>AvoidFriendlyFire_1_0_3</defName>
+        <assemblyVersion>1.0.3</assemblyVersion>
+        <content>In Rimworld 1.x, low skill shooters have a larger miss radius than higher skilled ones. This mod now accounts for that. This can be turned off in mod settings to revert to the fixed "one-tile miss radius" assumption, but that may result in friendly fire hits.</content>
+    </HugsLib.UpdateFeatureDef>
 </Defs>
