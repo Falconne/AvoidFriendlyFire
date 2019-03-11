@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  <FALCFF.EnableModDesc>如果此模式導致問題，請記錄錯誤並從此處將其禁用，直到更新可用爲止，以便保留您的設置。</FALCFF.EnableModDesc>
+  <FALCFF.EnableMod>啓用Mod</FALCFF.EnableMod>
+  
+  <FALCFF.ShowTargetingOverlay>顯示射擊覆蓋區域</FALCFF.ShowTargetingOverlay>
+  <FALCFF.ShowTargetingOverlayDesc>使用遠程武器手動瞄准目標時，高亮顯示彈藥可能穿過的所有區域，以顯示可能誤傷半徑。</FALCFF.ShowTargetingOverlayDesc>
+
+  <FALCFF.ProtectPets>保護寵物</FALCFF.ProtectPets>
+  <FALCFF.ProtectPetsDesc>保護被分配了主人的馴化動物，就如同保護殖民者一樣。</FALCFF.ProtectPetsDesc>
+
+  <FALCFF.ProtectColonyAnimals>保護所有的寵物</FALCFF.ProtectColonyAnimals>
+  <FALCFF.ProtectColonyAnimalsDesc>如果關閉，則只有經過了主人訓練的動物才成爲保護對象。選中此選項後，屬于殖民地的所有寵物/家畜動物都將成爲保護對象。但是在擁有多個家畜的低性能電腦上可能會出現性能問題。</FALCFF.ProtectColonyAnimalsDesc>
+
+  <FALCFF.IgnoreShieldedPawns>忽略帶有護盾的殖民者</FALCFF.IgnoreShieldedPawns>
+  <FALCFF.IgnoreShieldedPawnsDesc>在至少有10%的能量下，射擊者不會擔心佩帶護盾的殖民者在射擊路徑上。</FALCFF.IgnoreShieldedPawnsDesc>
+
+  <FALCFF.EnableWhenUndrafted>未征兵時始終啓用</FALCFF.EnableWhenUndrafted>
+  <FALCFF.EnableWhenUndraftedDesc>如果您在戰鬥中頻繁禁用“禁用同伴射擊”的設定，則使用此選項。如果未征兵，則始終啓用禁止誤傷。</FALCFF.EnableWhenUndraftedDesc>
+</LanguageData>
