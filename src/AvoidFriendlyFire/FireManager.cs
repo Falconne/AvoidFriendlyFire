@@ -8,6 +8,8 @@ namespace AvoidFriendlyFire
 {
     public class FireManager
     {
+        public bool SkipNextCheck;
+
         private readonly Dictionary<int, Dictionary<int, CachedFireCone>> _cachedFireCones
             = new Dictionary<int, Dictionary<int, CachedFireCone>>();
 
@@ -15,6 +17,14 @@ namespace AvoidFriendlyFire
 
         public bool CanHitTargetSafely(FireProperties fireProperties)
         {
+            if (SkipNextCheck)
+            {
+                SkipNextCheck = false;
+                return true;
+            }
+
+            Main.Instance.PawnStatusTracker.Remove(fireProperties.Caster);
+
             HashSet<int> fireCone = GetOrCreatedCachedFireConeFor(fireProperties);
             if (fireCone == null)
                 return true;
@@ -51,6 +61,8 @@ namespace AvoidFriendlyFire
 
                 if (IsPawnWearingUsefulShield(pawn))
                     continue;
+
+                Main.Instance.PawnStatusTracker.AddBlockedShooter(fireProperties.Caster, pawn);
 
                 return false;
             }

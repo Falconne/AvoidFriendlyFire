@@ -20,6 +20,8 @@ namespace AvoidFriendlyFire
 
         private ExtendedDataStorage _extendedDataStorage;
 
+        public PawnStatusTracker PawnStatusTracker { get; } = new PawnStatusTracker();
+
         private FireManager _fireManager;
 
         private SettingHandle<bool> _showOverlay;
@@ -47,6 +49,7 @@ namespace AvoidFriendlyFire
             if (!IsModEnabled())
                 return;
             _fireManager?.RemoveExpiredCones(currentTick);
+            PawnStatusTracker.RemoveExpired();
         }
 
         public override void WorldLoaded()
@@ -64,6 +67,7 @@ namespace AvoidFriendlyFire
             base.MapLoaded(map);
             _fireManager = new FireManager();
             _fireConeOverlay = new FireConeOverlay();
+            PawnStatusTracker.Reset();
         }
 
         public override void DefsLoaded()

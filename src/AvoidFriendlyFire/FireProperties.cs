@@ -20,7 +20,7 @@ namespace AvoidFriendlyFire
     {
         public IntVec3 Target;
 
-        public Map CasterMap => _caster.Map;
+        public Map CasterMap => Caster.Map;
 
         public IntVec3 Origin;
 
@@ -30,17 +30,16 @@ namespace AvoidFriendlyFire
 
         public int TargetIndex => CasterMap.cellIndices.CellToIndex(Target);
 
-
-        private readonly Thing _caster;
+        public Pawn Caster { get; }
 
         private readonly Verb _weaponVerb;
 
         public FireProperties(Pawn caster, IntVec3 target)
         {
             Target = target;
-            _caster = caster;
+            Caster = caster;
             _weaponVerb = GetEquippedWeaponVerb(caster);
-            Origin = _caster.Position;
+            Origin = Caster.Position;
         }
 
         public bool ArePointsVisibleAndValid()
@@ -78,13 +77,13 @@ namespace AvoidFriendlyFire
         {
             var distance = (Target - Origin).LengthHorizontal;
 
-            var factorFromShooterAndDist = ShotReport.HitFactorFromShooter(_caster, distance);
+            var factorFromShooterAndDist = ShotReport.HitFactorFromShooter(Caster, distance);
 
             var factorFromEquipment = _weaponVerb.verbProps.GetHitChanceFactor(
                 _weaponVerb.EquipmentSource, distance);
 
             var factorFromWeather = 1f;
-            if (!_caster.Position.Roofed(CasterMap) || !Target.Roofed(CasterMap))
+            if (!Caster.Position.Roofed(CasterMap) || !Target.Roofed(CasterMap))
             {
                 factorFromWeather = CasterMap.weatherManager.CurWeatherAccuracyMultiplier;
             }

@@ -35,4 +35,10 @@
         <assemblyVersion>1.0.3</assemblyVersion>
         <content>In Rimworld 1.x, low skill shooters have a larger miss radius than higher skilled ones. This mod now accounts for that. This can be turned off in mod settings to revert to the fixed "one-tile miss radius" assumption, but that may result in friendly fire hits.</content>
     </HugsLib.UpdateFeatureDef>
+
+  <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <defName>AvoidFriendlyFire_1_0_4</defName>
+    <assemblyVersion>1.0.4</assemblyVersion>
+    <content>Shooters who are being blocked by friendlies (but would otherwise have a target) will now have their name on the map and in the Colonist Bar be written in cyan. Likewise, the first friendly blocking any shooter will show up in green.</content>
+  </HugsLib.UpdateFeatureDef>
 </Defs>

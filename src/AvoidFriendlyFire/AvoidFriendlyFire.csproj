@@ -54,11 +54,15 @@
     <Compile Include="FireProperties.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Patches\AttackTargetFinder_BestAttackTarget_Patch.cs" />
+    <Compile Include="Patches\TooltipUtility_ShotCalculationTipString_Patch.cs" />
+    <Compile Include="Patches\PawnNameColorUtility_PawnNameColorOf_Patch.cs" />
     <Compile Include="Patches\Pawn_DraftController_GetGizmos_Patch.cs" />
     <Compile Include="Patches\Pawn_DraftController_set_Drafted_Patch.cs" />
     <Compile Include="Patches\Pawn_Kill_Patch.cs" />
     <Compile Include="Patches\Targeter_TargeterUpdate_Patch.cs" />
     <Compile Include="Patches\Verb_CanHitTargetFrom_Patch.cs" />
+    <Compile Include="PawnStatus.cs" />
+    <Compile Include="PawnStatusTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />
   </ItemGroup>

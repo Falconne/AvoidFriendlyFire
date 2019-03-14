@@ -8,9 +8,6 @@ namespace AvoidFriendlyFire
     {
         public static void Postfix(Pawn_DraftController __instance, bool value)
         {
-            if (!Main.Instance.ShouldEnableWhenUndrafted())
-                return;
-
             if (value)
                 return;
 
@@ -20,6 +17,11 @@ namespace AvoidFriendlyFire
 
             var pawn = __instance.pawn;
             if (!extendedDataStore.CanTrackPawn(pawn))
+                return;
+
+            Main.Instance.PawnStatusTracker.Remove(pawn);
+
+            if (!Main.Instance.ShouldEnableWhenUndrafted())
                 return;
 
             var pawnData = extendedDataStore.GetExtendedDataFor(pawn);

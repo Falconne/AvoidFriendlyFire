@@ -20,6 +20,8 @@ namespace AvoidFriendlyFire
                 if (!__instance.Dead)
                     return;
 
+                Main.Instance.PawnStatusTracker.KillOff(__instance);
+
                 Main.Instance.GetExtendedDataStorage().DeleteExtendedDataFor(__instance);
 
             }
