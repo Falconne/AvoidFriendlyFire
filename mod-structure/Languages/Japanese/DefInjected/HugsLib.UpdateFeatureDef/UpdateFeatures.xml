@@ -13,4 +13,10 @@
 	<AvoidFriendlyFire_0_18_7.modNameReadable>Avoid Friendly Fire</AvoidFriendlyFire_0_18_7.modNameReadable>
 	<AvoidFriendlyFire_0_18_7.content>ペットの保護は、必要に応じてModオプションでオフにできるようになりました。これは、調教したボムラットを武器として使用したりや特定のModを使用する場合に便利でしょう。</AvoidFriendlyFire_0_18_7.content>
 
+	<AvoidFriendlyFire_1_0_3.modNameReadable>Avoid Friendly Fire</AvoidFriendlyFire_1_0_3.modNameReadable>
+	<AvoidFriendlyFire_1_0_3.content>Rimworldの1.x版では、スキルの低い射手はスキルの高い射手よりも射撃ミスの半径が大きくなります。今からこのModでの変化を説明します。Mod設定でそれをオフにして、以前の固定された「ミス半径が1タイル」の状態に戻すことが可能ですが、それによって味方への誤射が発生するかもしれません。</AvoidFriendlyFire_1_0_3.content>
+
+	<AvoidFriendlyFire_1_0_4.modNameReadable>Avoid Friendly Fire</AvoidFriendlyFire_1_0_4.modNameReadable>
+	<AvoidFriendlyFire_1_0_4.content>視線をブロックされている射手と、それらをブロックしている友軍をそれぞれマップと入植者バーにシアン色と緑色で表示します。また射手が攻撃する際に、射線をブロックしているペットと味方の動物は、動物の名前表示を消す設定にしていても、名前が強制的に緑色で表示されるようになりました。</AvoidFriendlyFire_1_0_4.content>
+
 </LanguageData>
