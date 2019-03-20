@@ -19,4 +19,7 @@
   <FALCFF.EnableWhenUndrafted>徴兵されてない時は常に有効</FALCFF.EnableWhenUndrafted>
   <FALCFF.EnableWhenUndraftedDesc>もしあなたが戦闘中にポーンで「味方撃ちを無効」の設定を頻繁に無効化するようでしたら、このオプションを使用すると、徴兵されていない場合、常に再びオンに戻ります。</FALCFF.EnableWhenUndraftedDesc>
 
+  <FALCFF.EnableAccurateMissRadius>正確なミス半径を使用</FALCFF.EnableAccurateMissRadius>
+  <FALCFF.EnableAccurateMissRadiusDesc>スキルの低い射手はスキルの高い射手よりも命中ミスをする半径が大きく、このModではそれを反映しています。この設定が無効になっていると、Modはすべての射手に対してミスの半径を1タイルに仮設定します。これはスキルの低い射手にはより優しいですが、結果的により多く味方への誤射が発生します。</FALCFF.EnableAccurateMissRadiusDesc>
+
 </LanguageData>
