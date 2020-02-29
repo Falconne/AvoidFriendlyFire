@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Harmony;
+using HarmonyLib;
 using HugsLib.Settings;
 using HugsLib.Utils;
 using Verse;
@@ -56,7 +56,7 @@ namespace AvoidFriendlyFire
         {
             base.WorldLoaded();
             _extendedDataStorage =
-                UtilityWorldObjectManager.GetUtilityWorldObject<ExtendedDataStorage>();
+                Find.World.GetComponent<ExtendedDataStorage>();
 
             // Ticks appear to be run before MapLoaded, so we need a FireManager available
             _fireManager = new FireManager();

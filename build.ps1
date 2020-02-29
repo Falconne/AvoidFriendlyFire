@@ -37,21 +37,27 @@ function removePath($path)
 
 function getInstallDir
 {
+    Write-Host "Looking for RimWorld installation..."
     $installSubDir = "Steam\SteamApps\common\RimWorld"
     $installDir = "$(${Env:ProgramFiles(x86)})\$($installSubDir)"
+    Write-Host "Checking $installDir"
     if (Test-Path $installDir)
     {
         return $installDir
     }
 
     $installDir = "$($Env:ProgramFiles)\$($installSubDir)"
+    Write-Host "Checking $installDir"
     if (Test-Path $installDir)
     {
         return $installDir
     }
 
+    Write-Host "RimWorld not found"
     return $null
 }
+
+$installDir = getInstallDir
 
 function getProjectDir
 {
@@ -60,9 +66,17 @@ function getProjectDir
 
 $assemblyInfoFile = "$(getProjectDir)\properties\AssemblyInfo.cs"
 
+function getGameVersion
+{
+    $gameVersionFile = "$installDir\Version.txt"
+    $gameVersionWithRev = Get-Content $gameVersionFile
+    $version = [version] ($gameVersionWithRev.Split(" "))[0]
+
+    return "$($version.Major).$($version.Minor)"
+}
+
 function updateToGameVersion
 {
-    $installDir = getInstallDir
     if (!$installDir)
     {
         Write-Host -ForegroundColor Red `
@@ -71,12 +85,10 @@ function updateToGameVersion
         return
     }
 
-    $gameVersionFile = "$installDir\Version.txt"
-    $gameVersionWithRev = Get-Content $gameVersionFile
-    $version = [version] ($gameVersionWithRev.Split(" "))[0]
+    $gameVersion = getGameVersion
 
     $content = Get-Content -Raw $assemblyInfoFile
-    $newContent = $content -replace '"\d+\.\d+(\.\d+\.\d+")', "`"$($version.Major).$($version.Minor)`$1"
+    $newContent = $content -replace '"\d+\.\d+(\.\d+\.\d+")', "`"$gameVersion`$1"
 
     if ($newContent -eq $content)
     {
@@ -88,12 +100,7 @@ function updateToGameVersion
 function copyDependencies
 {
     $thirdpartyDir = "$PSScriptRoot\ThirdParty"
-    if (Test-Path "$thirdpartyDir\*.dll")
-    {
-        return
-    }
 
-    $installDir = getInstallDir
     if (!$installDir)
     {
         Write-Host -ForegroundColor Red `
@@ -105,8 +112,12 @@ function copyDependencies
     $depsDir = "$installDir\RimWorldWin64_Data\Managed"
     Write-Host "Copying dependencies from installation directory"
     if (!(Test-Path $thirdpartyDir)) { mkdir $thirdpartyDir | Out-Null }
-    Copy-Item -Force "$depsDir\UnityEngine.dll" "$thirdpartyDir\"
-    Copy-Item -Force "$depsDir\Assembly-CSharp.dll" "$thirdpartyDir\"
+
+    & robocopy /mir $depsDir $thirdpartyDir "Unity*.dll" "Assembly-CSharp.dll"
+    if ($LASTEXITCODE -gt 4)
+    {
+        throw "Sync of RimWorld DLLs failed"
+    }
 }
 
 function doPreBuild
@@ -123,12 +134,14 @@ function doPostBuild
 
     $targetDir = "$(getProjectDir)\bin\Release"
     $targetPath = "$targetDir\$targetName.dll"
-    $distAssemblyDir = "$distTargetDir\Assemblies"
+
+    $gameVersion =
+
+    $distAssemblyDir = "$distTargetDir\v$(getGameVersion)\Assemblies"
     mkdir $distAssemblyDir | Out-Null
 
     Copy-Item -Recurse -Force "$PSScriptRoot\mod-structure\*" $distTargetDir
     Copy-Item -Force $targetPath $distAssemblyDir
-    Copy-Item -Force "$targetDir\*HugsLibChecker.dll" $distAssemblyDir
 
     Write-Host "Creating distro package"
     $content = Get-Content -Raw $assemblyInfoFile
@@ -150,7 +163,6 @@ function doPostBuild
     Write-Host "Created $distZip"
 
 
-    $installDir = getInstallDir
     if (!$installDir)
     {
         Write-Host -ForegroundColor Yellow `

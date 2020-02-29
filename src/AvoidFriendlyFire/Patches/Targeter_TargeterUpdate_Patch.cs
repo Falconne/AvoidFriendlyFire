@@ -1,5 +1,6 @@
-﻿using Harmony;
+﻿using HarmonyLib;
 using RimWorld;
+using Verse;
 
 namespace AvoidFriendlyFire
 {
@@ -12,14 +13,16 @@ namespace AvoidFriendlyFire
                 return;
 
             Main.Instance.UpdateFireConeOverlay(false);
-            if (__instance.targetingVerb == null)
+            if (__instance.targetingSource == null)
                 return;
 
-            if (__instance.targetingVerb.verbProps.IsMeleeAttack)
+            if (__instance.targetingSource.IsMeleeAttack)
                 return;
 
-            bool dummy;
-            if (__instance.targetingVerb.HighlightFieldRadiusAroundTarget(out dummy) > 0.2f)
+            if (!(__instance.targetingSource is Verb verb)) 
+                return;
+
+            if (verb.HighlightFieldRadiusAroundTarget(out _) > 0.2f)
                 return;
 
             Main.Instance.UpdateFireConeOverlay(true);

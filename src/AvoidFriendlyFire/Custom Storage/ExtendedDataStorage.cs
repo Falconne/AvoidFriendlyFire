@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using HugsLib.Utils;
 using RimWorld;
+using RimWorld.Planet;
 using Verse;
 
 namespace AvoidFriendlyFire
 {
-    public class ExtendedDataStorage : UtilityWorldObject, IExposable
+    public class ExtendedDataStorage : WorldComponent
     {
         private Dictionary<int, ExtendedPawnData> _store =
             new Dictionary<int, ExtendedPawnData>();
@@ -18,7 +18,7 @@ namespace AvoidFriendlyFire
         public override void ExposeData()
         {
             base.ExposeData();
-			Scribe_Collections.Look(
+            Scribe_Collections.Look(
                 ref _store, "store", 
                 LookMode.Value, LookMode.Deep, 
                 ref _idWorkingList, ref _extendedPawnDataWorkingList);
@@ -63,6 +63,10 @@ namespace AvoidFriendlyFire
         public void DeleteExtendedDataFor(Pawn pawn)
         {
             _store.Remove(pawn.thingIDNumber);
+        }
+
+        public ExtendedDataStorage(World world) : base(world)
+        {
         }
     }
 }
