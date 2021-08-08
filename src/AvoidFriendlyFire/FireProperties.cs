@@ -24,7 +24,7 @@ namespace AvoidFriendlyFire
 
         public IntVec3 Origin;
 
-        public float ForcedMissRadius => _weaponVerb.verbProps.forcedMissRadius;
+        public float ForcedMissRadius => _weaponVerb.verbProps.ForcedMissRadius;
 
         public int OriginIndex => CasterMap.cellIndices.CellToIndex(Origin);
 

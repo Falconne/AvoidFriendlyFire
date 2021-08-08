@@ -100,6 +100,10 @@ function updateToGameVersion
 function copyDependencies
 {
     $thirdpartyDir = "$PSScriptRoot\ThirdParty"
+    if (Test-Path "$thirdpartyDir\*.dll")
+    {
+        return
+    }
 
     if (!$installDir)
     {
@@ -112,12 +116,8 @@ function copyDependencies
     $depsDir = "$installDir\RimWorldWin64_Data\Managed"
     Write-Host "Copying dependencies from installation directory"
     if (!(Test-Path $thirdpartyDir)) { mkdir $thirdpartyDir | Out-Null }
-
-    & robocopy /mir $depsDir $thirdpartyDir "Unity*.dll" "Assembly-CSharp.dll"
-    if ($LASTEXITCODE -gt 4)
-    {
-        throw "Sync of RimWorld DLLs failed"
-    }
+    Copy-Item -Force "$depsDir\Unity*.dll" "$thirdpartyDir\"
+    Copy-Item -Force "$depsDir\Assembly-CSharp.dll" "$thirdpartyDir\"
 }
 
 function doPreBuild
@@ -135,13 +135,18 @@ function doPostBuild
     $targetDir = "$(getProjectDir)\bin\Release"
     $targetPath = "$targetDir\$targetName.dll"
 
-    $gameVersion =
-
-    $distAssemblyDir = "$distTargetDir\v$(getGameVersion)\Assemblies"
+    $distAssemblyDir = "$distTargetDir\$(getGameVersion)\Assemblies"
     mkdir $distAssemblyDir | Out-Null
 
     Copy-Item -Recurse -Force "$PSScriptRoot\mod-structure\*" $distTargetDir
     Copy-Item -Force $targetPath $distAssemblyDir
+
+    $modStructureAssemblyLocation = "$PSScriptRoot\mod-structure\$(getGameVersion)\Assemblies"
+    if (!(Test-Path $modStructureAssemblyLocation))
+    {
+        mkdir $modStructureAssemblyLocation | Out-Null
+    }
+    Copy-Item -Force $targetPath $modStructureAssemblyLocation
 
     Write-Host "Creating distro package"
     $content = Get-Content -Raw $assemblyInfoFile
