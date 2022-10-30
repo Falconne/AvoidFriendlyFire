@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-    <HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
+    <HugsLib.UpdateFeatureDef Abstract="true" Name="AFFUpdates">
         <modNameReadable>Avoid Friendly Fire</modNameReadable>
         <modIdentifier>AvoidFriendlyFire</modIdentifier>
         <linkUrl>https://ludeon.com/forums/index.php?topic=35571.0</linkUrl>
     </HugsLib.UpdateFeatureDef>
 
-    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <HugsLib.UpdateFeatureDef ParentName="AFFUpdates">
         <defName>AvoidFriendlyFire_0_17_6</defName>
         <assemblyVersion>0.17.6</assemblyVersion>
         <content>Mod now supports weapons with forced miss radius, such as miniguns</content>
     </HugsLib.UpdateFeatureDef>
 
-    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <HugsLib.UpdateFeatureDef ParentName="AFFUpdates">
         <defName>AvoidFriendlyFire_0_18_2</defName>
         <assemblyVersion>0.18.2</assemblyVersion>
         <content>Shooters will no longer worry about pawns wearing a shield belt with at least 10% power standing in the line of fire. You can now attack with shielded infantry while ranged troops continue to fire over them from behind. If the shield drops below 10% power while the pawn is still subject to friendly fire, then the shooters will stop. They will resume shooting after the shield gets above 10%. This behaviour can be disabled from the mod options if needed.</content>
     </HugsLib.UpdateFeatureDef>
 
-    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <HugsLib.UpdateFeatureDef ParentName="AFFUpdates">
         <defName>AvoidFriendlyFire_0_18_5</defName>
         <assemblyVersion>0.18.5</assemblyVersion>
         <content>Added a setting in Mod Options to always enable 'Avoid FF' status on a pawn when it's undrafted. If you tend to disable the 'Avoid FF' setting on pawns during combat, using this option will ensure it is always turned back on again before the next combat. This new option is off by default.</content>
     </HugsLib.UpdateFeatureDef>
 
-    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <HugsLib.UpdateFeatureDef ParentName="AFFUpdates">
         <defName>AvoidFriendlyFire_0_18_7</defName>
         <assemblyVersion>0.18.7</assemblyVersion>
         <content>Pet protection can now be turned off in Mod Options if desired. This can be useful when using tamed boomrats as weapons, or with certain mods.</content>
     </HugsLib.UpdateFeatureDef>
 
-    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+    <HugsLib.UpdateFeatureDef ParentName="AFFUpdates">
         <defName>AvoidFriendlyFire_1_0_3</defName>
         <assemblyVersion>1.0.3</assemblyVersion>
         <content>In Rimworld 1.x, low skill shooters have a larger miss radius than higher skilled ones. This mod now accounts for that. This can be turned off in mod settings to revert to the fixed "one-tile miss radius" assumption, but that may result in friendly fire hits.</content>
     </HugsLib.UpdateFeatureDef>
 
-  <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+  <HugsLib.UpdateFeatureDef ParentName="AFFUpdates">
     <defName>AvoidFriendlyFire_1_0_4</defName>
     <assemblyVersion>1.0.4</assemblyVersion>
     <content>Shooters who are being blocked by friendlies (but would otherwise have a target) will now have their name on the map and in the Colonist Bar be written in cyan. Likewise, the first friendly blocking any shooter will show up in green.</content>

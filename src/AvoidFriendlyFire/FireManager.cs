@@ -80,14 +80,14 @@ namespace AvoidFriendlyFire
 
             foreach (Apparel apparel in pawn.apparel.WornApparel)
             {
-                var shield = apparel as ShieldBelt;
-                if (shield == null)
+                if (apparel.def != ThingDefOf.Apparel_ShieldBelt)
                     continue;
 
+                var shield = apparel.AllComps.FirstOrDefault(c => c is CompShield) as CompShield;
                 if (shield.ShieldState != ShieldState.Active)
                     return false;
 
-                var energyMax = shield.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
+                var energyMax = shield.parent.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
                 return shield.Energy / energyMax > 0.1f;
             }
 

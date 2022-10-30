@@ -88,20 +88,15 @@ namespace AvoidFriendlyFire
                 factorFromWeather = CasterMap.weatherManager.CurWeatherAccuracyMultiplier;
             }
 
-            ThingDef coveringGas = null;
+            var factorFromCoveringGas = 1f;
             foreach (var point in GenSight.PointsOnLineOfSight(Origin, Target))
             {
                 if (!point.CanBeSeenOver(CasterMap))
                     break;
 
-                Thing gas = point.GetGas(CasterMap);
-                if (IsThisGasMorePenalisingThan(gas, coveringGas))
-                {
-                    coveringGas = gas.def;
-                }
+                if (point.AnyGas(CasterMap, GasType.BlindSmoke))
+                    factorFromCoveringGas = 1f - GasUtility.BlindingGasAccuracyPenalty;
             }
-
-            var factorFromCoveringGas = 1f - (coveringGas?.gas.accuracyPenalty ?? 0f);
 
             var result = factorFromShooterAndDist * factorFromEquipment * factorFromWeather *
                          factorFromCoveringGas;
@@ -109,17 +104,6 @@ namespace AvoidFriendlyFire
                 result = 0.0201f;
 
             return result;
-        }
-
-        private static bool IsThisGasMorePenalisingThan(Thing gas, ThingDef otherGas)
-        {
-            if (gas == null)
-                return false;
-
-            if (otherGas == null)
-                return true;
-
-            return otherGas.gas.accuracyPenalty < gas.def.gas.accuracyPenalty;
         }
 
         private bool HasClearShotFrom(IntVec3 tryFromOrigin)
